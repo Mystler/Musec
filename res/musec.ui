@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MusecMainWindow</class>
  <widget class="QWidget" name="MusecMainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -33,6 +36,10 @@
   </property>
   <property name="windowTitle">
    <string>Musec</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="musec.qrc">
+    <normaloff>:/icon/musec.ico</normaloff>:/icon/musec.ico</iconset>
   </property>
   <widget class="QLabel" name="lblTitle">
    <property name="geometry">
@@ -125,7 +132,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -171,6 +178,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="musec.qrc"/>
+ </resources>
  <connections/>
 </ui>
