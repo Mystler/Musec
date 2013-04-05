@@ -23,6 +23,7 @@ private:
 
 private slots:
     void timeout();
+    void durationChanged(qint64 duration);
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
     void on_btnBrowse_clicked();

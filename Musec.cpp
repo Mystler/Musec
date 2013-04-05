@@ -1,25 +1,24 @@
+#include "Musec.h"
 #include <QtGui>
 #include <QMediaPlayer>
 #include <QFileDialog>
-#include <stdint.h>
-#include "Musec.h"
 
 Musec::Musec(QWidget* parent) : QWidget(parent)
 {
     setupUi(this);
-    fPlayer = new QMediaPlayer(this);
+    fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fTimer = new QTimer(this);
+    fTimer->setSingleShot(true);
     fDir = QDir::homePath();
 
-    connect(fTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(fTimer, &QTimer::timeout, this, &Musec::timeout);
+    connect(fPlayer, &QMediaPlayer::durationChanged, this, &Musec::durationChanged);
 }
 
 void Musec::loadSong(QString filename)
 {
+    fStartTime = 0;
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
-    qint64 timeRange = fPlayer->duration() * 0.8f;
-    qint64 startRange = fPlayer->duration() * 0.1f;
-    fStartTime = (qrand() % timeRange) + startRange;
 }
 
 void Musec::playSong()
@@ -34,6 +33,15 @@ void Musec::timeout()
     fPlayer->stop();
 }
 
+void Musec::durationChanged(qint64 duration)
+{
+    if (duration <= 0)
+        return;
+    qint64 timeRange = duration * 0.8f;
+    qint64 startRange = duration * 0.1f;
+    fStartTime = (qrand() % timeRange) + startRange;
+}
+
 void Musec::on_btnPlay_clicked()
 {
     playSong();
@@ -41,6 +49,8 @@ void Musec::on_btnPlay_clicked()
 
 void Musec::on_btnNext_clicked()
 {
+    lblInfo->setText("");
+
     // Remove last song
     if (!fSongs.isEmpty())
         fSongs.pop_front();
@@ -68,21 +78,21 @@ void Musec::on_btnBrowse_clicked()
     while (it.hasNext())
         fSongs << it.next();
     fDir = dir;
-
-    // Shuffle song list
     if (fSongs.isEmpty()) {
         lblInfo->setText(tr("No Songs found"));
         return;
     }
+
+    // Shuffle song list
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-    for (size_t i = fSongs.size() - 1; i > 0; i--) {
-        uint32_t random = qrand() % fSongs.count();
+    for (int i = fSongs.size() - 1; i > 0; i--) {
+        int random = qrand() % fSongs.count();
         QString str = fSongs[i];
         fSongs[i] = fSongs[random];
         fSongs[random] = str;
     }
-    lblInfo->setText(QString().setNum(fSongs.size()) + " " + tr("Songs added"));
 
     // Load first song
+    lblInfo->setText(QString().setNum(fSongs.size()) + " " + tr("Songs added"));
     loadSong(fSongs.first());
 }
