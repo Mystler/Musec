@@ -15,6 +15,8 @@ Musec::Musec(QWidget* parent) : QWidget(parent)
     fTimer->setSingleShot(true);
     fDir = QDir::homePath();
 
+    fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
+
     connect(fTimer, &QTimer::timeout, this, &Musec::timeout);
     connect(fPlayer, &QMediaPlayer::durationChanged, this, &Musec::durationChanged);
 
@@ -122,8 +124,6 @@ void Musec::on_btnNext_clicked()
 void Musec::on_btnAddDir_clicked()
 {
     lblInfo->setText(tr("Loading..."));
-    QStringList exts;
-    exts << "*.mp3" << "*.m4a"; // These should contain meta data
 
     // Open dir and add music files to fSongs
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
@@ -132,7 +132,7 @@ void Musec::on_btnAddDir_clicked()
         lblInfo->clear();
         return;
     }
-    QDirIterator it(dir, exts, QDir::Files, QDirIterator::Subdirectories);
+    QDirIterator it(dir, fExtensions, QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext())
         fSongs << it.next();
     fDir = dir;
@@ -147,12 +147,10 @@ void Musec::on_btnAddDir_clicked()
 void Musec::on_btnAddFiles_clicked()
 {
     lblInfo->setText(tr("Loading..."));
-    QStringList exts;
-    exts << "*.mp3" << "*.m4a"; // These should contain meta data
 
     // Add music files to fSongs
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Files"),
-            fDir, "Music (*.mp3 *.m4a)");
+            fDir, "Music (" + fExtensions.join(" ") + ")");
     if (files.isEmpty()) {
         lblInfo->clear();
         return;

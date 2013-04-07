@@ -15,6 +15,7 @@ public:
 private:
     QMediaPlayer* fPlayer;
     QTimer* fTimer;
+    QStringList fExtensions;
     QStringList fSongs;
     QString fDir;
     qint64 fStartTime;
