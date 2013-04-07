@@ -3,4 +3,8 @@ Musec
 
 Do you know a song by just listening to one second of it?
 
-This program is still in early development...
+Choose folders and files of your own music library and see if you can
+guess title, artist and album by only hearing one second from somewhere
+in the song. Right answers will add points to your score.
+
+Dependencies: Qt5

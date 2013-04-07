@@ -18,14 +18,20 @@ private:
     QStringList fSongs;
     QString fDir;
     qint64 fStartTime;
+    void shuffleList();
     void loadSong(QString filename);
     void playSong();
+    void evaluate();
+    void resetForm();
+    void activateForm();
 
 private slots:
     void timeout();
     void durationChanged(qint64 duration);
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
-    void on_btnBrowse_clicked();
+    void on_btnAddDir_clicked();
+    void on_btnAddFiles_clicked();
+    void on_btnClear_clicked();
 };
 #endif
