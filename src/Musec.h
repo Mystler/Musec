@@ -38,6 +38,7 @@ private:
     QString fDir;
     qint64 fStartTime;
     quint32 fScore;
+    quint32 fSongsPlayed;
     bool fIsActive;
     void shuffleList();
     void loadSong(QString filename);

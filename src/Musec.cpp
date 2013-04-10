@@ -37,6 +37,7 @@ Musec::Musec(QWidget* parent) : QWidget(parent)
     fTimer->setSingleShot(true);
     fDir = QDir::homePath();
     fScore = 0;
+    fSongsPlayed = 0;
     fIsActive = false;
 
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
@@ -58,7 +59,7 @@ void Musec::shuffleList()
     }
 
     // Load first song
-    lblInfo->setText(QString().setNum(fSongs.size()) + tr(" Songs loaded (total)"));
+    lblInfo->setText(QString::number(fSongs.size()) + tr(" Songs loaded (total)"));
     loadSong(fSongs.first());
 }
 
@@ -98,7 +99,12 @@ void Musec::evaluate()
     edTitle->setText(title);
     edArtist->setText(artist);
     edAlbum->setText(album);
-    lblScore->setText(tr("Score: ") + QString().setNum(fScore));
+
+    fSongsPlayed++;
+    quint32 maxScore = fSongsPlayed * (POINTS_TITLE +
+            POINTS_ARTIST + POINTS_ALBUM);
+    lblScore->setText(tr("Score: ") + QString::number(fScore) +
+            " (" + QString::number(fScore * 100 / maxScore) + "%)");
 }
 
 bool Musec::match(QString str1, QString str2)
@@ -106,10 +112,10 @@ bool Musec::match(QString str1, QString str2)
     // Cast to lower case
     str1 = str1.toLower();
     str2 = str2.toLower();
-    // Remove (...),[...],',spaces,dots,commas,?,!
-    QRegularExpression regex("(\\(.*\\))|(\\[.*\\])|'| |\\.|,|\\?|!");
-    str1.replace(regex, "");
-    str2.replace(regex, "");
+    // Remove (...), [...] and non-alphabetic characters
+    QRegularExpression regex("(\\(.*\\))|(\\[.*\\])|[^a-zA-Z]");
+    str1.remove(regex);
+    str2.remove(regex);
 
     // Exact match
     if (str1 == str2)
