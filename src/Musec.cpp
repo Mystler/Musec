@@ -22,9 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMediaPlayer>
 #include <QFileDialog>
 
-#define POINTS_TITLE 2
-#define POINTS_ARTIST 2
-#define POINTS_ALBUM 1
+#define POINTS_TITLE 3
+#define POINTS_ARTIST 1
+#define POINTS_ALBUM 2
 
 Musec::Musec(QWidget* parent) : QWidget(parent)
 {
@@ -51,7 +51,7 @@ Musec::Musec(QWidget* parent) : QWidget(parent)
 void Musec::shuffleList()
 {
     // Shuffle song list
-    for (int i = fSongs.size() - 1; i > 0; i--) {
+    for (int i = fSongs.size() - 1; i >= 0; i--) {
         int random = qrand() % fSongs.size();
         QString str = fSongs[i];
         fSongs[i] = fSongs[random];
