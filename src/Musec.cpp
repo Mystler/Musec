@@ -22,6 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMediaPlayer>
 #include <QFileDialog>
 
+#define POINTS_TITLE 2
+#define POINTS_ARTIST 2
+#define POINTS_ALBUM 1
+
 Musec::Musec(QWidget* parent) : QWidget(parent)
 {
     setupUi(this);
@@ -32,6 +36,8 @@ Musec::Musec(QWidget* parent) : QWidget(parent)
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
     fDir = QDir::homePath();
+    fScore = 0;
+    fIsActive = false;
 
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
@@ -45,7 +51,7 @@ void Musec::shuffleList()
 {
     // Shuffle song list
     for (int i = fSongs.size() - 1; i > 0; i--) {
-        int random = qrand() % fSongs.count();
+        int random = qrand() % fSongs.size();
         QString str = fSongs[i];
         fSongs[i] = fSongs[random];
         fSongs[random] = str;
@@ -64,7 +70,7 @@ void Musec::loadSong(QString filename)
 
 void Musec::playSong()
 {
-    lblInfo->setText(QTime(0,0).addSecs(fStartTime).toString("mm:ss"));
+    lblInfo->setText(QTime(0,0,0).addSecs(fStartTime).toString("mm:ss"));
     fPlayer->setPosition(fStartTime * 1000);
     fPlayer->play();
     fTimer->start(1000);
@@ -72,14 +78,48 @@ void Musec::playSong()
 
 void Musec::evaluate()
 {
+    QString title = fPlayer->metaData(QMediaMetaData::Title).toString();
+    QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
+    QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
 
+    if (match(edTitle->text(),  title)) {
+        fScore += POINTS_TITLE;
+        chkTitle->setChecked(true);
+    }
+    if (match(edArtist->text(),  artist)) {
+        fScore += POINTS_ARTIST;
+        chkArtist->setChecked(true);
+    }
+    if (match(edAlbum->text(),  album)) {
+        fScore += POINTS_ALBUM;
+        chkAlbum->setChecked(true);
+    }
+
+    edTitle->setText(title);
+    edArtist->setText(artist);
+    edAlbum->setText(album);
+    lblScore->setText(tr("Score: ") + QString().setNum(fScore));
+}
+
+bool Musec::match(QString str1, QString str2)
+{
+    // Cast to lower case
+    str1 = str1.toLower();
+    str2 = str2.toLower();
+    // Remove (...),[...],',spaces,dots,commas,?,!
+    QRegularExpression regex("(\\(.*\\))|(\\[.*\\])|'| |\\.|,|\\?|!");
+    str1.replace(regex, "");
+    str2.replace(regex, "");
+
+    // Exact match
+    if (str1 == str2)
+        return true;
+    return false;
 }
 
 void Musec::resetForm()
 {
-    edTitle->clear();
-    edArtist->clear();
-    edAlbum->clear();
+    fIsActive = false;
     btnPlay->setText(tr("Play"));
     btnPlay->setDisabled(true);
     btnNext->setDisabled(true);
@@ -90,11 +130,18 @@ void Musec::resetForm()
 
 void Musec::activateForm()
 {
+    fIsActive = true;
+    edTitle->clear();
+    edArtist->clear();
+    edAlbum->clear();
     btnPlay->setText(tr("Play Again"));
     btnNext->setEnabled(true);
     edTitle->setEnabled(true);
     edArtist->setEnabled(true);
     edAlbum->setEnabled(true);
+    chkTitle->setChecked(false);
+    chkArtist->setChecked(false);
+    chkAlbum->setChecked(false);
 }
 
 void Musec::timeout()
@@ -119,7 +166,8 @@ void Musec::durationChanged(qint64 duration)
 
 void Musec::on_btnPlay_clicked()
 {
-    activateForm();
+    if (!fIsActive)
+        activateForm();
     playSong();
 }
 

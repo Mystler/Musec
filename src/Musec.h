@@ -37,10 +37,13 @@ private:
     QStringList fSongs;
     QString fDir;
     qint64 fStartTime;
+    quint32 fScore;
+    bool fIsActive;
     void shuffleList();
     void loadSong(QString filename);
     void playSong();
     void evaluate();
+    bool match(QString str1, QString str2);
     void resetForm();
     void activateForm();
 
