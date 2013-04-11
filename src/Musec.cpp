@@ -63,7 +63,7 @@ void Musec::shuffleList()
     loadSong(fSongs.first());
 }
 
-void Musec::loadSong(QString filename)
+void Musec::loadSong(const QString& filename)
 {
     fStartTime = 0;
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
@@ -112,7 +112,7 @@ bool Musec::match(QString str1, QString str2)
     // Cast to lower case
     str1 = str1.toLower();
     str2 = str2.toLower();
-    // Remove (...), [...] and non-alphabetic characters
+    // Remove (..., [... and non-alphabetic characters
     QRegularExpression regex("(\\(.*\\)?)|(\\[.*\\]?)|[^a-zA-Z]");
     str1.remove(regex);
     str2.remove(regex);
@@ -120,6 +120,30 @@ bool Musec::match(QString str1, QString str2)
     // Exact match
     if (str1 == str2)
         return true;
+
+    // Allow one mistake every 5 letters
+    int tolerance = str1.length()/5;
+    int i = 0, j = 0, diff = 0, mismatches = 0;
+    while (i < str1.length() && j < str2.length()) {
+        if (str1.at(i) == str2.at(j)) {
+            diff = i - j;
+            i++;
+            j++;
+        } else {
+            if (diff == i - j) {
+                mismatches++;
+                diff--;
+                i++;
+            } else {
+                j++;
+            }
+        }
+    }
+    mismatches += str1.length() - i;
+    mismatches += str2.length() - j;
+    if (mismatches <= tolerance)
+        return true;
+
     return false;
 }
 

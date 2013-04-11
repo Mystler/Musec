@@ -41,7 +41,7 @@ private:
     quint32 fSongsPlayed;
     bool fIsActive;
     void shuffleList();
-    void loadSong(QString filename);
+    void loadSong(const QString& filename);
     void playSong();
     void evaluate();
     bool match(QString str1, QString str2);
