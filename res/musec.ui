@@ -19,7 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>420</width>
-    <height>260</height>
+    <height>275</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>420</width>
+    <height>275</height>
    </size>
   </property>
   <property name="focusPolicy">
