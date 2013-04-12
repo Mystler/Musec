@@ -24,11 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class QMediaPlayer;
 class QTimer;
 
-class Musec : public QWidget, private Ui::MusecMainWindow {
+class Musec : public QMainWindow, private Ui::MusecMainWindow {
     Q_OBJECT
 
 public:
-    Musec(QWidget* parent = 0);
+    Musec(QMainWindow* parent = 0);
 
 private:
     QMediaPlayer* fPlayer;
@@ -53,8 +53,8 @@ private slots:
     void durationChanged(qint64 duration);
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
-    void on_btnAddDir_clicked();
-    void on_btnAddFiles_clicked();
-    void on_btnClear_clicked();
+    void on_actAddDir_triggered();
+    void on_actAddFiles_triggered();
+    void on_actClear_triggered();
 };
 #endif

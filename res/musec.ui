@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MusecMainWindow</class>
- <widget class="QWidget" name="MusecMainWindow">
+ <widget class="QMainWindow" name="MusecMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>225</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,14 +19,17 @@
   <property name="minimumSize">
    <size>
     <width>420</width>
-    <height>225</height>
+    <height>260</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>420</width>
-    <height>225</height>
+    <height>260</height>
    </size>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
   </property>
   <property name="contextMenuPolicy">
    <enum>Qt::NoContextMenu</enum>
@@ -38,303 +41,273 @@
    <iconset resource="musec.qrc">
     <normaloff>:/icon/musec.ico</normaloff>:/icon/musec.ico</iconset>
   </property>
-  <widget class="QLabel" name="lblTitle">
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btnPlay">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>180</y>
+      <width>100</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Play</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkTitle">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>396</x>
+      <y>34</y>
+      <width>14</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblAlbum">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>400</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Album:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblInfo">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>160</y>
+      <width>300</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkAlbum">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>396</x>
+      <y>134</y>
+      <width>14</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblTitle">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>400</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Title:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edAlbum">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>380</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnNext">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>180</y>
+      <width>100</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Accept</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblArtist">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>400</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Artist:</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkArtist">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>396</x>
+      <y>84</y>
+      <width>14</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edTitle">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>380</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblScore">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>90</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Score: 0</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edArtist">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>380</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>400</width>
-     <height>13</height>
+     <x>0</x>
+     <y>0</y>
+     <width>420</width>
+     <height>21</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Title:</string>
-   </property>
+   <widget class="QMenu" name="menuMusic">
+    <property name="title">
+     <string>Music</string>
+    </property>
+    <addaction name="actAddDir"/>
+    <addaction name="actAddFiles"/>
+    <addaction name="actClear"/>
+   </widget>
+   <widget class="QMenu" name="menuInfo">
+    <property name="title">
+     <string>Info</string>
+    </property>
+    <addaction name="actStats"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actAbout"/>
+   </widget>
+   <addaction name="menuMusic"/>
+   <addaction name="menuInfo"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QLineEdit" name="edTitle">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>380</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblArtist">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>400</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Artist:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="edArtist">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>380</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="edAlbum">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>380</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblAlbum">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>400</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Album:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblInfo">
+  <widget class="QStatusBar" name="statusbar">
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>160</y>
-     <width>300</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
   </widget>
-  <widget class="QPushButton" name="btnPlay">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>180</y>
-     <width>100</width>
-     <height>39</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Play</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnNext">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>180</y>
-     <width>100</width>
-     <height>39</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Accept</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lblScore">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>160</y>
-     <width>90</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Score: 0</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="chkTitle">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>396</x>
-     <y>34</y>
-     <width>14</width>
-     <height>14</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="chkArtist">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>396</x>
-     <y>84</y>
-     <width>14</width>
-     <height>14</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="chkAlbum">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>396</x>
-     <y>134</y>
-     <width>14</width>
-     <height>14</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QToolButton" name="btnClear">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>200</y>
-     <width>40</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clear</string>
-   </property>
-  </widget>
-  <widget class="QToolButton" name="btnAddDir">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>150</width>
-     <height>19</height>
-    </rect>
-   </property>
+  <action name="actAddDir">
    <property name="text">
     <string>Add Directory...</string>
    </property>
-  </widget>
-  <widget class="QToolButton" name="btnAddFiles">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>200</y>
-     <width>110</width>
-     <height>19</height>
-    </rect>
-   </property>
+  </action>
+  <action name="actAddFiles">
    <property name="text">
     <string>Add Files...</string>
    </property>
-  </widget>
+  </action>
+  <action name="actClear">
+   <property name="text">
+    <string>Clear List</string>
+   </property>
+  </action>
+  <action name="actStats">
+   <property name="text">
+    <string>Stats</string>
+   </property>
+  </action>
+  <action name="actAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
- <tabstops>
-  <tabstop>edTitle</tabstop>
-  <tabstop>edArtist</tabstop>
-  <tabstop>edAlbum</tabstop>
-  <tabstop>btnNext</tabstop>
-  <tabstop>btnPlay</tabstop>
- </tabstops>
  <resources>
   <include location="musec.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>edTitle</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnNext</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>209</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>191</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>edArtist</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnNext</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>209</x>
-     <y>89</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>191</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>edAlbum</sender>
-   <signal>returnPressed()</signal>
-   <receiver>btnNext</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>209</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>369</x>
-     <y>191</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

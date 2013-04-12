@@ -26,12 +26,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POINTS_ARTIST 1
 #define POINTS_ALBUM 2
 
-Musec::Musec(QWidget* parent) : QWidget(parent)
+Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
     setupUi(this);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
-            Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint |
-            Qt::MSWindowsFixedSizeDialogHint);
+            Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint |
+            Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
@@ -217,7 +217,7 @@ void Musec::on_btnNext_clicked()
         lblInfo->setText(tr("No more songs left"));
 }
 
-void Musec::on_btnAddDir_clicked()
+void Musec::on_actAddDir_triggered()
 {
     lblInfo->setText(tr("Loading..."));
 
@@ -240,7 +240,7 @@ void Musec::on_btnAddDir_clicked()
     shuffleList();
 }
 
-void Musec::on_btnAddFiles_clicked()
+void Musec::on_actAddFiles_triggered()
 {
     lblInfo->setText(tr("Loading..."));
 
@@ -261,7 +261,7 @@ void Musec::on_btnAddFiles_clicked()
     shuffleList();
 }
 
-void Musec::on_btnClear_clicked()
+void Musec::on_actClear_triggered()
 {
     resetForm();
     fSongs.clear();
