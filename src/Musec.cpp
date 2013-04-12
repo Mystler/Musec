@@ -25,6 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POINTS_TITLE 3
 #define POINTS_ARTIST 1
 #define POINTS_ALBUM 2
+#define TIME_EASY 5
+#define TIME_MEDIUM 3
+#define TIME_HARD 1
+#define MULTIPLIER_EASY 1
+#define MULTIPLIER_MEDIUM 2
+#define MULTIPLIER_HARD 5
 
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
@@ -44,6 +50,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 
     connect(fTimer, &QTimer::timeout, this, &Musec::timeout);
     connect(fPlayer, &QMediaPlayer::durationChanged, this, &Musec::durationChanged);
+    connect(slDifficulty, &QSlider::valueChanged, this, &Musec::difficultyChanged);
 
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 }
@@ -59,7 +66,6 @@ void Musec::shuffleList()
     }
 
     // Load first song
-    lblInfo->setText(QString::number(fSongs.size()) + tr(" Songs loaded (total)"));
     loadSong(fSongs.first());
 }
 
@@ -67,14 +73,17 @@ void Musec::loadSong(const QString& filename)
 {
     fStartTime = 0;
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
+    updateMultiplier();
+    statusbar->showMessage(tr("Played: %1 (%2 in queue)").arg(
+            QString::number(fSongsPlayed)).arg(QString::number(fSongs.size())));
 }
 
 void Musec::playSong()
 {
-    lblInfo->setText(QTime(0,0,0).addSecs(fStartTime).toString("mm:ss"));
+    statusbar->showMessage(QTime(0,0,0).addSecs(fStartTime).toString("mm:ss"));
     fPlayer->setPosition(fStartTime * 1000);
     fPlayer->play();
-    fTimer->start(1000);
+    fTimer->start();
 }
 
 void Musec::evaluate()
@@ -83,28 +92,31 @@ void Musec::evaluate()
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
 
-    if (match(edTitle->text(),  title)) {
-        fScore += POINTS_TITLE;
+    quint32 score = 0;
+    if (match(edTitle->text(),  title) || title.isEmpty()) {
+        score += POINTS_TITLE;
         chkTitle->setChecked(true);
     }
-    if (match(edArtist->text(),  artist)) {
-        fScore += POINTS_ARTIST;
+    if (match(edArtist->text(),  artist) || artist.isEmpty()) {
+        score += POINTS_ARTIST;
         chkArtist->setChecked(true);
     }
-    if (match(edAlbum->text(),  album)) {
-        fScore += POINTS_ALBUM;
+    if (match(edAlbum->text(),  album) || album.isEmpty()) {
+        score += POINTS_ALBUM;
         chkAlbum->setChecked(true);
     }
+    score = score * fMultiplier + 0.5f;
+    fScore += score;
 
     edTitle->setText(title);
     edArtist->setText(artist);
     edAlbum->setText(album);
 
     fSongsPlayed++;
-    quint32 maxScore = fSongsPlayed * (POINTS_TITLE +
-            POINTS_ARTIST + POINTS_ALBUM);
-    lblScore->setText(tr("Score: ") + QString::number(fScore) +
-            " (" + QString::number(fScore * 100 / maxScore) + "%)");
+    lblScore->setText(tr("Score: %1").arg(QString::number(fScore)));
+    float avg = fScore/fSongsPlayed;
+    lblAverage->setText(tr("Average: %1").arg(QString::number(avg, 'f', 2)));
+    lblLast->setText(tr("Last Score: %1").arg(QString::number(score)));
 }
 
 bool Musec::match(QString str1, QString str2)
@@ -147,6 +159,33 @@ bool Musec::match(QString str1, QString str2)
     return false;
 }
 
+void Musec::updateMultiplier()
+{
+    // Multiplier for number of songs in queue
+    fMultiplier = 1 + fSongs.size()/200;
+
+    // Multiplier for difficulty
+    switch (slDifficulty->value()) {
+    case 3:
+        fMultiplier *= MULTIPLIER_EASY;
+        fTimer->setInterval(TIME_EASY * 1000);
+        lblDifficulty->setText(QString::number(TIME_EASY) + "s");
+        break;
+    case 2:
+        fMultiplier *= MULTIPLIER_MEDIUM;
+        fTimer->setInterval(TIME_MEDIUM * 1000);
+        lblDifficulty->setText(QString::number(TIME_MEDIUM) + "s");
+        break;
+    default:
+        fMultiplier *= MULTIPLIER_HARD;
+        fTimer->setInterval(TIME_HARD * 1000);
+        lblDifficulty->setText(QString::number(TIME_HARD) + "s");
+    }
+
+    lblMultiplier->setText(tr("Multiplier: %1").arg(
+            QString::number(fMultiplier, 'f', 2)));
+}
+
 void Musec::resetForm()
 {
     fIsActive = false;
@@ -156,6 +195,9 @@ void Musec::resetForm()
     edTitle->setDisabled(true);
     edArtist->setDisabled(true);
     edAlbum->setDisabled(true);
+
+    // Unlock difficulty
+    slDifficulty->setMinimum(1);
 }
 
 void Musec::activateForm()
@@ -194,10 +236,18 @@ void Musec::durationChanged(qint64 duration)
     btnPlay->setEnabled(true);
 }
 
+void Musec::difficultyChanged(int value)
+{
+    updateMultiplier();
+}
+
 void Musec::on_btnPlay_clicked()
 {
+    // Activate input
     if (!fIsActive)
         activateForm();
+    // Lock difficulty
+    slDifficulty->setMinimum(slDifficulty->value());
     playSong();
 }
 
@@ -214,18 +264,18 @@ void Musec::on_btnNext_clicked()
     if (!fSongs.isEmpty())
         loadSong(fSongs.first());
     else
-        lblInfo->setText(tr("No more songs left"));
+        statusbar->showMessage(tr("No more songs left"));
 }
 
 void Musec::on_actAddDir_triggered()
 {
-    lblInfo->setText(tr("Loading..."));
+    statusbar->showMessage(tr("Loading..."));
 
     // Open dir and add music files to fSongs
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
             fDir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (dir.isEmpty()) {
-        lblInfo->clear();
+        statusbar->clearMessage();
         return;
     }
     QDirIterator it(dir, fExtensions, QDir::Files, QDirIterator::Subdirectories);
@@ -233,7 +283,7 @@ void Musec::on_actAddDir_triggered()
         fSongs << it.next();
     fDir = dir;
     if (fSongs.isEmpty()) {
-        lblInfo->setText(tr("No Songs found"));
+        statusbar->showMessage(tr("No Songs found"));
         return;
     }
 
@@ -242,19 +292,19 @@ void Musec::on_actAddDir_triggered()
 
 void Musec::on_actAddFiles_triggered()
 {
-    lblInfo->setText(tr("Loading..."));
+    statusbar->showMessage(tr("Loading..."));
 
     // Add music files to fSongs
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Files"),
             fDir, "Music (" + fExtensions.join(" ") + ")");
     if (files.isEmpty()) {
-        lblInfo->clear();
+        statusbar->clearMessage();
         return;
     }
     fDir = QFileInfo(files[0]).absolutePath();
     fSongs += files;
     if (fSongs.isEmpty()) {
-        lblInfo->setText(tr("No Songs found"));
+        statusbar->showMessage(tr("No Songs found"));
         return;
     }
 
@@ -265,5 +315,5 @@ void Musec::on_actClear_triggered()
 {
     resetForm();
     fSongs.clear();
-    lblInfo->setText(tr("No more songs left"));
+    statusbar->showMessage(tr("No more songs left"));
 }
