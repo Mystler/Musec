@@ -196,8 +196,9 @@ void Musec::resetForm()
     edArtist->setDisabled(true);
     edAlbum->setDisabled(true);
 
-    // Unlock difficulty
+    // Reset difficulty
     slDifficulty->setMinimum(1);
+    slDifficulty->setValue(1);
 }
 
 void Musec::activateForm()
@@ -246,7 +247,7 @@ void Musec::on_btnPlay_clicked()
     // Activate input
     if (!fIsActive)
         activateForm();
-    // Lock difficulty
+    // Prevent difficulty cheating
     slDifficulty->setMinimum(slDifficulty->value());
     playSong();
 }
