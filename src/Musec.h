@@ -49,6 +49,8 @@ private:
     void updateMultiplier();
     void resetForm();
     void activateForm();
+    void setConfig(const QString& key, const QString& value);
+    QString getConfig(const QString& key, const QString& default);
 
 private slots:
     void timeout();

@@ -41,11 +41,11 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
-    fDir = QDir::homePath();
     fScore = 0;
     fSongsPlayed = 0;
     fIsActive = false;
 
+    fDir = getConfig("music/dir", QDir::homePath());
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
     connect(fTimer, &QTimer::timeout, this, &Musec::timeout);
@@ -217,6 +217,16 @@ void Musec::activateForm()
     chkAlbum->setChecked(false);
 }
 
+void Musec::setConfig(const QString& key, const QString& value)
+{
+    QSettings("Mystler", "Musec").setValue(key, value);
+}
+
+QString Musec::getConfig(const QString& key, const QString& default)
+{
+    return QSettings("Mystler", "Musec").value(key, default).toString();
+}
+
 void Musec::timeout()
 {
     fPlayer->stop();
@@ -283,6 +293,7 @@ void Musec::on_actAddDir_triggered()
     while (it.hasNext())
         fSongs << it.next();
     fDir = dir;
+    setConfig("music/dir", fDir);
     if (fSongs.isEmpty()) {
         statusbar->showMessage(tr("No Songs found"));
         return;
@@ -303,6 +314,7 @@ void Musec::on_actAddFiles_triggered()
         return;
     }
     fDir = QFileInfo(files[0]).absolutePath();
+    setConfig("music/dir", fDir);
     fSongs += files;
     if (fSongs.isEmpty()) {
         statusbar->showMessage(tr("No Songs found"));
