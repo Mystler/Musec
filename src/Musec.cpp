@@ -125,7 +125,7 @@ bool Musec::match(QString str1, QString str2)
     str1 = str1.toLower();
     str2 = str2.toLower();
     // Remove (..., [... and non-alphabetic characters
-    QRegularExpression regex("(\\(.*\\)?)|(\\[.*\\]?)|[^a-zA-Z]");
+    QRegularExpression regex("(\\(.*\\))|(\\[.*\\])|[^a-zA-Z]");
     str1.remove(regex);
     str2.remove(regex);
 
