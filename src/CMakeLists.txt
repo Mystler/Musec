@@ -1,5 +1,6 @@
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5LinguistTools REQUIRED)
 
 set(Musec_HEADERS
     Musec.h
@@ -10,24 +11,31 @@ set(Musec_SOURCES
 )
 set(Musec_QRC ../res/musec.qrc)
 set(Musec_QUI ../res/musec.ui)
+set(Musec_TS
+    ../res/musec_de.ts
+)
 
 qt5_wrap_ui(Musec_UI ${Musec_QUI})
-qt5_add_resources(Musec_RES ${Musec_QRC})
 qt5_wrap_cpp(Musec_MOC ${Musec_HEADERS})
+qt5_add_resources(Musec_RES ${Musec_QRC})
+qt5_add_translation(Musec_LOC ${Musec_TS})
 if(WIN32)
-    set(Musec_RES ${Musec_RES} ../res/musec.rc)
+    set(Musec_RC ../res/musec.rc)
 endif()
 
 add_executable(Musec WIN32
     ${Musec_MOC} ${Musec_SOURCES}
     ${Musec_UI} ${Musec_RES}
+    ${Musec_RC} ${Musec_LOC}
 )
 
 target_link_libraries(Musec ${Qt5Core_QTMAIN_LIBRARIES})
 qt5_use_modules(Musec Widgets Multimedia)
 
 source_group("Source Files" FILES ${Musec_SOURCES})
-source_group("MOC Files" FILES ${Musec_MOC})
 source_group("Resource Files" FILES
-    ${Musec_RES} ${Musec_UI} ${Musec_QUI} ${Musec_QRC}
+    ${Musec_QUI} ${Musec_QRC} ${Musec_RC}
+)
+source_group("Generated Files" FILES
+    ${Musec_MOC} ${Musec_RES} ${Musec_UI} ${Musec_LOC}
 )

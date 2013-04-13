@@ -35,7 +35,7 @@
    <enum>Qt::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>Musec</string>
+   <string notr="true">Musec</string>
   </property>
   <property name="windowIcon">
    <iconset resource="musec.qrc">
@@ -206,7 +206,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Score: </string>
+     <string>Score:</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="edArtist">
@@ -232,7 +232,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Average: </string>
+     <string>Average:</string>
     </property>
    </widget>
    <widget class="QSlider" name="slDifficulty">
@@ -273,7 +273,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1s</string>
+     <string notr="true">1s</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblMultiplier">
@@ -286,7 +286,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Multiplier: </string>
+     <string>Multiplier:</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblLast">
@@ -333,8 +333,16 @@
     <addaction name="actAbout"/>
     <addaction name="actAboutQt"/>
    </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actLangEn"/>
+    <addaction name="actLangDe"/>
+   </widget>
    <addaction name="menuMusic"/>
    <addaction name="menuInfo"/>
+   <addaction name="menuLanguage"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -370,6 +378,16 @@
   <action name="actAboutQt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actLangEn">
+   <property name="text">
+    <string notr="true">English</string>
+   </property>
+  </action>
+  <action name="actLangDe">
+   <property name="text">
+    <string notr="true">Deutsch</string>
    </property>
   </action>
  </widget>

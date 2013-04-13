@@ -29,6 +29,8 @@ class Musec : public QMainWindow, private Ui::MusecMainWindow {
 
 public:
     Musec(QMainWindow* parent = 0);
+    static void setConfig(const QString& key, const QString& value);
+    static QString getConfig(const QString& key, const QString& default);
 
 private:
     QMediaPlayer* fPlayer;
@@ -49,8 +51,6 @@ private:
     void updateMultiplier();
     void resetForm();
     void activateForm();
-    void setConfig(const QString& key, const QString& value);
-    QString getConfig(const QString& key, const QString& default);
 
 private slots:
     void timeout();
@@ -62,6 +62,8 @@ private slots:
     void on_actAddFiles_triggered();
     void on_actClear_triggered();
     void on_actStats_triggered();
+    void on_actLangEn_triggered();
+    void on_actLangDe_triggered();
     void on_actAbout_triggered();
     void on_actAboutQt_triggered();
 };

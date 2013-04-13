@@ -56,6 +56,16 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 }
 
+void Musec::setConfig(const QString& key, const QString& value)
+{
+    QSettings("Mystler", "Musec").setValue(key, value);
+}
+
+QString Musec::getConfig(const QString& key, const QString& default)
+{
+    return QSettings("Mystler", "Musec").value(key, default).toString();
+}
+
 void Musec::shuffleList()
 {
     // Shuffle song list
@@ -218,16 +228,6 @@ void Musec::activateForm()
     chkAlbum->setChecked(false);
 }
 
-void Musec::setConfig(const QString& key, const QString& value)
-{
-    QSettings("Mystler", "Musec").setValue(key, value);
-}
-
-QString Musec::getConfig(const QString& key, const QString& default)
-{
-    return QSettings("Mystler", "Musec").value(key, default).toString();
-}
-
 void Musec::timeout()
 {
     fPlayer->stop();
@@ -335,6 +335,20 @@ void Musec::on_actClear_triggered()
 void Musec::on_actStats_triggered()
 {
     // TODO
+}
+
+void Musec::on_actLangEn_triggered()
+{
+    setConfig("lang", "en");
+    QMessageBox::information(this, "Language changed",
+            "You have to restart the program for the change to take effect.");
+}
+
+void Musec::on_actLangDe_triggered()
+{
+    setConfig("lang", "de");
+    QMessageBox::information(this, "Sprache geändert",
+            "Sie müssen das Programm neustarten, damit die Änderung aktiv ist.");
 }
 
 void Musec::on_actAbout_triggered()
