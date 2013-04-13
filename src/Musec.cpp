@@ -1,4 +1,4 @@
-﻿/*==LICENSE==
+/*==LICENSE==
 This file is part of Musec.
 Copyright (C) 2013 Florian Meißner
 
@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
+#include <QMessageBox>
 #include <QFileDialog>
 
 #define POINTS_TITLE 3
@@ -329,4 +330,22 @@ void Musec::on_actClear_triggered()
     resetForm();
     fSongs.clear();
     statusbar->showMessage(tr("No more songs left"));
+}
+
+void Musec::on_actStats_triggered()
+{
+    // TODO
+}
+
+void Musec::on_actAbout_triggered()
+{
+    QMessageBox::about(this, tr("About Musec"),
+            "Musec\nVersion: 1.0.0\n" +
+            tr("Created by") + " Florian Meißner 2013\n\n" +
+            "www.mystler.eu/musec");
+}
+
+void Musec::on_actAboutQt_triggered()
+{
+    QMessageBox::aboutQt(this, tr("About Qt"));
 }

@@ -331,6 +331,7 @@
      <string>Help</string>
     </property>
     <addaction name="actAbout"/>
+    <addaction name="actAboutQt"/>
    </widget>
    <addaction name="menuMusic"/>
    <addaction name="menuInfo"/>
@@ -364,6 +365,11 @@
   <action name="actAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actAboutQt">
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

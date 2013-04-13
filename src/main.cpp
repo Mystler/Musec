@@ -1,4 +1,4 @@
-﻿/*==LICENSE==
+/*==LICENSE==
 This file is part of Musec.
 Copyright (C) 2013 Florian Meißner
 

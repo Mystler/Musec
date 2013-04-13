@@ -1,4 +1,4 @@
-﻿/*==LICENSE==
+/*==LICENSE==
 This file is part of Musec.
 Copyright (C) 2013 Florian Meißner
 
@@ -61,5 +61,8 @@ private slots:
     void on_actAddDir_triggered();
     void on_actAddFiles_triggered();
     void on_actClear_triggered();
+    void on_actStats_triggered();
+    void on_actAbout_triggered();
+    void on_actAboutQt_triggered();
 };
 #endif
