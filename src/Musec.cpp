@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TIME_HARD 1
 #define MULTIPLIER_EASY 1
 #define MULTIPLIER_MEDIUM 2
-#define MULTIPLIER_HARD 5
+#define MULTIPLIER_HARD 4
 
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
@@ -135,8 +135,8 @@ bool Musec::match(QString str1, QString str2)
     // Cast to lower case
     str1 = str1.toLower();
     str2 = str2.toLower();
-    // Remove (..., [... and non-alphabetic characters
-    QRegularExpression regex("(\\(.*\\))|(\\[.*\\])|[^a-zA-Z]");
+    // Remove (...), [...] and non-alphabetic characters
+    QRegularExpression regex("\\(.*\\)|\\[.*\\]|\\(.*[^\\)]|\\[.*[^\\]]|[^a-zA-Z]");
     str1.remove(regex);
     str2.remove(regex);
 
@@ -173,7 +173,7 @@ bool Musec::match(QString str1, QString str2)
 void Musec::updateMultiplier()
 {
     // Multiplier for number of songs in queue
-    fMultiplier = 1 + fSongs.size()/200;
+    fMultiplier = 1.f + fSongs.size()/200.f;
 
     // Multiplier for difficulty
     switch (slDifficulty->value()) {
