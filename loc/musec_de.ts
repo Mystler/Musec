@@ -60,8 +60,8 @@
         <translation>Erstellt von</translation>
     </message>
     <message>
-        <source>About Qt</source>
-        <translation>Über Qt</translation>
+        <source>Using Qt %1</source>
+        <translation>Benutzt Qt %1</translation>
     </message>
 </context>
 <context>

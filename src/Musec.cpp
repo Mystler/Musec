@@ -354,12 +354,8 @@ void Musec::on_actLangDe_triggered()
 void Musec::on_actAbout_triggered()
 {
     QMessageBox::about(this, tr("About Musec"),
-            "Musec\nVersion: 1.0.0\n" +
+            "Musec\nVersion 1.0.0\n" +
+            tr("Using Qt %1").arg(QT_VERSION_STR) + "\n" +
             tr("Created by") + " Florian Meißner 2013\n\n" +
             "www.mystler.eu/musec");
-}
-
-void Musec::on_actAboutQt_triggered()
-{
-    QMessageBox::aboutQt(this, tr("About Qt"));
 }

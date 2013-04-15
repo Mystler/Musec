@@ -28,7 +28,7 @@ class Musec : public QMainWindow, private Ui::MusecMainWindow {
     Q_OBJECT
 
 public:
-    Musec(QMainWindow* parent = 0);
+    Musec(QMainWindow* parent = nullptr);
     static void setConfig(const QString& key, const QString& value);
     static QString getConfig(const QString& key, const QString& defaultVal);
 
@@ -65,6 +65,5 @@ private slots:
     void on_actLangEn_triggered();
     void on_actLangDe_triggered();
     void on_actAbout_triggered();
-    void on_actAboutQt_triggered();
 };
 #endif

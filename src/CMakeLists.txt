@@ -12,7 +12,7 @@ set(Musec_SOURCES
 set(Musec_QRC ../res/musec.qrc)
 set(Musec_QUI ../res/musec.ui)
 set(Musec_TS
-    ../res/musec_de.ts
+    ../loc/musec_de.ts
 )
 
 qt5_wrap_ui(Musec_UI ${Musec_QUI})
