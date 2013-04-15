@@ -30,7 +30,7 @@ class Musec : public QMainWindow, private Ui::MusecMainWindow {
 public:
     Musec(QMainWindow* parent = 0);
     static void setConfig(const QString& key, const QString& value);
-    static QString getConfig(const QString& key, const QString& default);
+    static QString getConfig(const QString& key, const QString& defaultVal);
 
 private:
     QMediaPlayer* fPlayer;

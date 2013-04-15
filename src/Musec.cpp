@@ -61,9 +61,9 @@ void Musec::setConfig(const QString& key, const QString& value)
     QSettings("Mystler", "Musec").setValue(key, value);
 }
 
-QString Musec::getConfig(const QString& key, const QString& default)
+QString Musec::getConfig(const QString& key, const QString& defaultVal)
 {
-    return QSettings("Mystler", "Musec").value(key, default).toString();
+    return QSettings("Mystler", "Musec").value(key, defaultVal).toString();
 }
 
 void Musec::shuffleList()
