@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class QMediaPlayer;
 class QTimer;
+class Score;
 
 class Musec : public QMainWindow, private Ui::MusecMainWindow {
     Q_OBJECT
@@ -33,29 +34,26 @@ public:
     static QString getConfig(const QString& key, const QString& defaultVal);
 
 private:
+    Score* fScore;
     QMediaPlayer* fPlayer;
     QTimer* fTimer;
     QStringList fExtensions;
     QStringList fSongs;
     QString fDir;
     qint64 fStartTime;
-    quint32 fScore;
-    quint32 fSongsPlayed;
-    float fMultiplier;
     bool fIsActive;
     void shuffleList();
     void loadSong(const QString& filename);
     void playSong();
     void evaluate();
     bool match(QString str1, QString str2);
-    void updateMultiplier();
     void resetForm();
     void activateForm();
 
 private slots:
-    void timeout();
     void durationChanged(qint64 duration);
     void difficultyChanged(int value);
+    void multiplierChanged(float value);
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
     void on_actAddDir_triggered();

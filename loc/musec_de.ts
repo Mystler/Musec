@@ -87,20 +87,20 @@
         <translation>Künstler:</translation>
     </message>
     <message>
-        <source>Score:</source>
-        <translation>Punkte:</translation>
+        <source>Score: 0</source>
+        <translation>Punkte: 0</translation>
     </message>
     <message>
-        <source>Average:</source>
-        <translation>Schnitt:</translation>
+        <source>Average: 0.00</source>
+        <translation>Schnitt: 0.00</translation>
     </message>
     <message>
-        <source>Multiplier:</source>
-        <translation>Faktor:</translation>
+        <source>Multiplier: 0.00</source>
+        <translation>Faktor: 0.00</translation>
     </message>
     <message>
-        <source>Last Score:</source>
-        <translation>Letzte Runde:</translation>
+        <source>Last Score: 0</source>
+        <translation>Letzte Runde: 0</translation>
     </message>
     <message>
         <source>Music</source>

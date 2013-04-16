@@ -4,10 +4,12 @@ find_package(Qt5LinguistTools REQUIRED)
 
 set(Musec_HEADERS
     Musec.h
+    Score.h
 )
 set(Musec_SOURCES
     main.cpp
     Musec.cpp
+    Score.cpp
 )
 set(Musec_QRC ../res/musec.qrc)
 set(Musec_QUI ../res/musec.ui)

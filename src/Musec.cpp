@@ -17,21 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 
 #include "Musec.h"
+#include "Score.h"
 #include <QtGui>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
 #include <QMessageBox>
 #include <QFileDialog>
 
-#define POINTS_TITLE 3
-#define POINTS_ARTIST 1
-#define POINTS_ALBUM 2
 #define TIME_EASY 5
 #define TIME_MEDIUM 3
 #define TIME_HARD 1
-#define MULTIPLIER_EASY 1
-#define MULTIPLIER_MEDIUM 2
-#define MULTIPLIER_HARD 4
 
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
@@ -39,17 +34,18 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
             Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint |
             Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
+    fScore = new Score();
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
-    fScore = 0;
-    fSongsPlayed = 0;
+    fTimer->setInterval(TIME_HARD * 1000);
     fIsActive = false;
 
     fDir = getConfig("music/dir", QDir::homePath());
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
-    connect(fTimer, &QTimer::timeout, this, &Musec::timeout);
+    connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
+    connect(fTimer, &QTimer::timeout, fPlayer, &QMediaPlayer::stop);
     connect(fPlayer, &QMediaPlayer::durationChanged, this, &Musec::durationChanged);
     connect(slDifficulty, &QSlider::valueChanged, this, &Musec::difficultyChanged);
 
@@ -84,9 +80,9 @@ void Musec::loadSong(const QString& filename)
 {
     fStartTime = 0;
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
-    updateMultiplier();
+    fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
     statusbar->showMessage(tr("Played: %1 (%2 in queue)").arg(
-            QString::number(fSongsPlayed)).arg(QString::number(fSongs.size())));
+            QString::number(fScore->played())).arg(QString::number(fSongs.size())));
 }
 
 void Musec::playSong()
@@ -103,31 +99,28 @@ void Musec::evaluate()
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
 
-    quint32 score = 0;
-    if (match(edTitle->text(),  title) || title.isEmpty()) {
-        score += POINTS_TITLE;
+    bool mTitle = false, mArtist = false, mAlbum = false;
+    if (title.isEmpty() || match(edTitle->text(),  title)) {
+        mTitle = true;
         chkTitle->setChecked(true);
     }
-    if (match(edArtist->text(),  artist) || artist.isEmpty()) {
-        score += POINTS_ARTIST;
+    if (artist.isEmpty() || match(edArtist->text(),  artist)) {
+        mArtist = true;
         chkArtist->setChecked(true);
     }
-    if (match(edAlbum->text(),  album) || album.isEmpty()) {
-        score += POINTS_ALBUM;
+    if (album.isEmpty() || match(edAlbum->text(),  album)) {
+        mAlbum = true;
         chkAlbum->setChecked(true);
     }
-    score = score * fMultiplier + 0.5f;
-    fScore += score;
+    fScore->addScore(mTitle, mArtist, mAlbum);
 
     edTitle->setText(title);
     edArtist->setText(artist);
     edAlbum->setText(album);
 
-    fSongsPlayed++;
-    lblScore->setText(tr("Score: %1").arg(QString::number(fScore)));
-    float avg = fScore/fSongsPlayed;
-    lblAverage->setText(tr("Average: %1").arg(QString::number(avg, 'f', 2)));
-    lblLast->setText(tr("Last Score: %1").arg(QString::number(score)));
+    lblScore->setText(tr("Score: %1").arg(QString::number(fScore->score())));
+    lblAverage->setText(tr("Average: %1").arg(QString::number(fScore->average(), 'f', 2)));
+    lblLast->setText(tr("Last Score: %1").arg(QString::number(fScore->lastScore())));
 }
 
 bool Musec::match(QString str1, QString str2)
@@ -170,33 +163,6 @@ bool Musec::match(QString str1, QString str2)
     return false;
 }
 
-void Musec::updateMultiplier()
-{
-    // Multiplier for number of songs in queue
-    fMultiplier = 1.f + fSongs.size()/200.f;
-
-    // Multiplier for difficulty
-    switch (slDifficulty->value()) {
-    case 3:
-        fMultiplier *= MULTIPLIER_EASY;
-        fTimer->setInterval(TIME_EASY * 1000);
-        lblDifficulty->setText(QString::number(TIME_EASY) + "s");
-        break;
-    case 2:
-        fMultiplier *= MULTIPLIER_MEDIUM;
-        fTimer->setInterval(TIME_MEDIUM * 1000);
-        lblDifficulty->setText(QString::number(TIME_MEDIUM) + "s");
-        break;
-    default:
-        fMultiplier *= MULTIPLIER_HARD;
-        fTimer->setInterval(TIME_HARD * 1000);
-        lblDifficulty->setText(QString::number(TIME_HARD) + "s");
-    }
-
-    lblMultiplier->setText(tr("Multiplier: %1").arg(
-            QString::number(fMultiplier, 'f', 2)));
-}
-
 void Musec::resetForm()
 {
     fIsActive = false;
@@ -228,11 +194,6 @@ void Musec::activateForm()
     chkAlbum->setChecked(false);
 }
 
-void Musec::timeout()
-{
-    fPlayer->stop();
-}
-
 void Musec::durationChanged(qint64 duration)
 {
     if (duration <= 0)
@@ -250,7 +211,26 @@ void Musec::durationChanged(qint64 duration)
 
 void Musec::difficultyChanged(int value)
 {
-    updateMultiplier();
+    switch (slDifficulty->value()) {
+    case Difficulty::kEasy:
+        fTimer->setInterval(TIME_EASY * 1000);
+        lblDifficulty->setText(QString::number(TIME_EASY) + "s");
+        break;
+    case Difficulty::kMedium:
+        fTimer->setInterval(TIME_MEDIUM * 1000);
+        lblDifficulty->setText(QString::number(TIME_MEDIUM) + "s");
+        break;
+    default:
+        fTimer->setInterval(TIME_HARD * 1000);
+        lblDifficulty->setText(QString::number(TIME_HARD) + "s");
+    }
+    fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
+}
+
+void Musec::multiplierChanged(float value)
+{
+    lblMultiplier->setText(tr("Multiplier: %1").arg(
+            QString::number(value, 'f', 2)));
 }
 
 void Musec::on_btnPlay_clicked()

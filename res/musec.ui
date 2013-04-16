@@ -206,7 +206,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Score:</string>
+     <string>Score: 0</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="edArtist">
@@ -232,7 +232,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Average:</string>
+     <string>Average: 0.00</string>
     </property>
    </widget>
    <widget class="QSlider" name="slDifficulty">
@@ -286,7 +286,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Multiplier:</string>
+     <string>Multiplier: 0.00</string>
     </property>
    </widget>
    <widget class="QLabel" name="lblLast">
@@ -299,7 +299,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Last Score:</string>
+     <string>Last Score: 0</string>
     </property>
    </widget>
   </widget>
