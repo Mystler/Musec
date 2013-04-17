@@ -8,22 +8,6 @@
         <translation>Gespielt: %1 (%2 in Warteschlange)</translation>
     </message>
     <message>
-        <source>Score: %1</source>
-        <translation>Punkte: %1</translation>
-    </message>
-    <message>
-        <source>Average: %1</source>
-        <translation>Schnitt: %1</translation>
-    </message>
-    <message>
-        <source>Last Score: %1</source>
-        <translation>Letzte Runde: %1</translation>
-    </message>
-    <message>
-        <source>Multiplier: %1</source>
-        <translation>Faktor: %1</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Spielen</translation>
     </message>
@@ -87,22 +71,6 @@
         <translation>Künstler:</translation>
     </message>
     <message>
-        <source>Score: 0</source>
-        <translation>Punkte: 0</translation>
-    </message>
-    <message>
-        <source>Average: 0.00</source>
-        <translation>Schnitt: 0.00</translation>
-    </message>
-    <message>
-        <source>Multiplier: 0.00</source>
-        <translation>Faktor: 0.00</translation>
-    </message>
-    <message>
-        <source>Last Score: 0</source>
-        <translation>Letzte Runde: 0</translation>
-    </message>
-    <message>
         <source>Music</source>
         <translation>Musik</translation>
     </message>
@@ -141,6 +109,22 @@
     <message>
         <source>About Qt</source>
         <translation>Über Qt</translation>
+    </message>
+    <message>
+        <source>Score:</source>
+        <translation>Punkte:</translation>
+    </message>
+    <message>
+        <source>Multiplier:</source>
+        <translation>Faktor:</translation>
+    </message>
+    <message>
+        <source>Average:</source>
+        <translation>Schnitt:</translation>
+    </message>
+    <message>
+        <source>Last Score:</source>
+        <translation>Letzte Runde:</translation>
     </message>
 </context>
 </TS>

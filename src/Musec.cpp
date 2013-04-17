@@ -82,7 +82,7 @@ void Musec::loadSong(const QString& filename)
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
     fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
     statusbar->showMessage(tr("Played: %1 (%2 in queue)").arg(
-            QString::number(fScore->played())).arg(QString::number(fSongs.size())));
+            fScore->played()).arg(fSongs.size()));
 }
 
 void Musec::playSong()
@@ -118,9 +118,9 @@ void Musec::evaluate()
     edArtist->setText(artist);
     edAlbum->setText(album);
 
-    lblScore->setText(tr("Score: %1").arg(QString::number(fScore->score())));
-    lblAverage->setText(tr("Average: %1").arg(QString::number(fScore->average(), 'f', 2)));
-    lblLast->setText(tr("Last Score: %1").arg(QString::number(fScore->lastScore())));
+    lblScoreVal->setText(QString::number(fScore->score()));
+    lblAverageVal->setText(QString::number(fScore->average(), 'f', 2));
+    lblLastVal->setText(QString::number(fScore->lastScore()));
 }
 
 bool Musec::match(QString str1, QString str2)
@@ -229,8 +229,7 @@ void Musec::difficultyChanged(int value)
 
 void Musec::multiplierChanged(float value)
 {
-    lblMultiplier->setText(tr("Multiplier: %1").arg(
-            QString::number(value, 'f', 2)));
+    lblMultiplierVal->setText(QString::number(value, 'f', 2));
 }
 
 void Musec::on_btnPlay_clicked()
