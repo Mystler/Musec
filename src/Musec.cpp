@@ -211,7 +211,7 @@ void Musec::durationChanged(qint64 duration)
 
 void Musec::difficultyChanged(int value)
 {
-    switch (slDifficulty->value()) {
+    switch (value) {
     case Difficulty::kEasy:
         fTimer->setInterval(TIME_EASY * 1000);
         lblDifficulty->setText(QString::number(TIME_EASY) + "s");
@@ -224,7 +224,7 @@ void Musec::difficultyChanged(int value)
         fTimer->setInterval(TIME_HARD * 1000);
         lblDifficulty->setText(QString::number(TIME_HARD) + "s");
     }
-    fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
+    fScore->updateMultiplier(value, fSongs.size());
 }
 
 void Musec::multiplierChanged(float value)
