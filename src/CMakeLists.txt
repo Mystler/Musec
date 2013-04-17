@@ -41,3 +41,6 @@ source_group("Resource Files" FILES
 source_group("Generated Files" FILES
     ${Musec_MOC} ${Musec_RES} ${Musec_UI} ${Musec_LOC}
 )
+
+install(TARGETS Musec DESTINATION .)
+install(FILES ${Musec_LOC} DESTINATION locales)
