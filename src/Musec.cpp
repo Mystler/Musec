@@ -174,8 +174,8 @@ void Musec::resetForm()
     edAlbum->setDisabled(true);
 
     // Reset difficulty
-    slDifficulty->setMinimum(1);
-    slDifficulty->setValue(1);
+    slDifficulty->setMinimum(kHard);
+    slDifficulty->setValue(kHard);
 }
 
 void Musec::activateForm()
@@ -212,11 +212,11 @@ void Musec::durationChanged(qint64 duration)
 void Musec::difficultyChanged(int value)
 {
     switch (value) {
-    case Difficulty::kEasy:
+    case kEasy:
         fTimer->setInterval(TIME_EASY * 1000);
         lblDifficulty->setText(QString::number(TIME_EASY) + "s");
         break;
-    case Difficulty::kMedium:
+    case kMedium:
         fTimer->setInterval(TIME_MEDIUM * 1000);
         lblDifficulty->setText(QString::number(TIME_MEDIUM) + "s");
         break;
@@ -313,7 +313,24 @@ void Musec::on_actClear_triggered()
 
 void Musec::on_actStats_triggered()
 {
-    // TODO
+    QStringList difficulties;
+    difficulties << tr("Hard (%1s)").arg(TIME_HARD);
+    difficulties << tr("Medium (%1s)").arg(TIME_MEDIUM);
+    difficulties << tr("Easy (%1s)").arg(TIME_EASY);
+    QMessageBox::information(this, tr("Statistics"),
+            tr("Played: %1").arg(fScore->played()) + "\n" +
+            tr("Score: %1").arg(fScore->score()) + "\n" +
+            tr("Average: %1").arg(fScore->average(), 0, 'f', 2) + "\n\n" +
+            tr("Titles: %1 (%2%)").arg(fScore->correctTitles()).arg(
+                    fScore->percentTitles(), 0, 'f', 2) + "\n" +
+            tr("Artists: %1 (%2%)").arg(fScore->correctArtists()).arg(
+                    fScore->percentArtists(), 0, 'f', 2) + "\n" +
+            tr("Albums: %1 (%2%)").arg(fScore->correctAlbums()).arg(
+                    fScore->percentAlbums(), 0, 'f', 2) + "\n" +
+            tr("Full: %1 (%2%)").arg(fScore->correctSets()).arg(
+                    fScore->percentSets(), 0, 'f', 2) + "\n\n" +
+            tr("Most played difficulty: %1").arg(
+                    difficulties.at(fScore->averageDifficulty())));
 }
 
 void Musec::on_actLangEn_triggered()

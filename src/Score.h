@@ -22,9 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 
 enum Difficulty {
-    kHard = 1,
+    kHard = 0,
     kMedium,
-    kEasy
+    kEasy,
+    kNumDifficulties
 };
 
 class Score : public QObject {
@@ -33,9 +34,10 @@ class Score : public QObject {
 public:
     Score();
     void addScore(bool title, bool artist, bool album);
-    void updateMultiplier(int difficulty, quint32 songs);
+    void updateMultiplier(quint8 difficulty, quint32 songs);
+    quint8 averageDifficulty();
+    float average();
 
-    float average() { return fScore / fPlayed; }
     float multiplier() { return fMultiplier; }
     quint32 score() { return fScore; }
     quint32 played() { return fPlayed; }
@@ -44,6 +46,10 @@ public:
     quint32 correctArtists() { return fCorrectArtists; }
     quint32 correctAlbums() { return fCorrectAlbums; }
     quint32 correctSets() { return fCorrectSets; }
+    float percentTitles() { return percentPlayed(fCorrectTitles); }
+    float percentArtists() { return percentPlayed(fCorrectArtists); }
+    float percentAlbums() { return percentPlayed(fCorrectAlbums); }
+    float percentSets() { return percentPlayed(fCorrectSets); }
 
 private:
     float fMultiplier;
@@ -54,6 +60,10 @@ private:
     quint32 fCorrectArtists;
     quint32 fCorrectAlbums;
     quint32 fCorrectSets;
+    quint32 fDiffPlayed[kNumDifficulties];
+    quint8 fDifficulty;
+
+    float percentPlayed(quint32 count);
 
 signals:
     void multiplierChanged(float value);

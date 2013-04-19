@@ -47,6 +47,54 @@
         <source>Using Qt %1</source>
         <translation>Benutzt Qt %1</translation>
     </message>
+    <message>
+        <source>Hard (%1s)</source>
+        <translation>Schwer (%1s)</translation>
+    </message>
+    <message>
+        <source>Medium (%1s)</source>
+        <translation>Mittel (%1s)</translation>
+    </message>
+    <message>
+        <source>Easy (%1s)</source>
+        <translation>Leicht (%1s)</translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation>Statistik</translation>
+    </message>
+    <message>
+        <source>Played: %1</source>
+        <translation>Gespielt: %1</translation>
+    </message>
+    <message>
+        <source>Score: %1</source>
+        <translation>Punkte: %1</translation>
+    </message>
+    <message>
+        <source>Average: %1</source>
+        <translation>Schnitt: %1</translation>
+    </message>
+    <message>
+        <source>Titles: %1 (%2%)</source>
+        <translation>Titel: %1 (%2%)</translation>
+    </message>
+    <message>
+        <source>Artists: %1 (%2%)</source>
+        <translation>Künstler: %1 (%2%)</translation>
+    </message>
+    <message>
+        <source>Albums: %1 (%2%)</source>
+        <translation>Alben: %1 (%2%)</translation>
+    </message>
+    <message>
+        <source>Full: %1 (%2%)</source>
+        <translation>Komplett: %1 (%2%)</translation>
+    </message>
+    <message>
+        <source>Most played difficulty: %1</source>
+        <translation>Häufigster Schwierigkeitsgrad: %1</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -99,10 +147,6 @@
         <translation>Liste leeren</translation>
     </message>
     <message>
-        <source>Stats</source>
-        <translation>Statistik</translation>
-    </message>
-    <message>
         <source>About</source>
         <translation>Über</translation>
     </message>
@@ -125,6 +169,10 @@
     <message>
         <source>Last Score:</source>
         <translation>Letzte Runde:</translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation>Statistik</translation>
     </message>
 </context>
 </TS>
