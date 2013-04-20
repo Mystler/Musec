@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QMessageBox>
 #include <QFileDialog>
 
@@ -36,6 +37,8 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
             Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     fScore = new Score();
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
+    fPlaylist = new QMediaPlaylist();
+    fPlayer->setPlaylist(fPlaylist);
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
     fTimer->setInterval(TIME_HARD * 1000);
@@ -62,41 +65,11 @@ QString Musec::getConfig(const QString& key, const QString& defaultVal)
     return QSettings("Mystler", "Musec").value(key, defaultVal).toString();
 }
 
-void Musec::shuffleList()
-{
-    // Shuffle song list
-    for (int i = fSongs.size() - 1; i >= 0; i--) {
-        int random = qrand() % fSongs.size();
-        QString str = fSongs[i];
-        fSongs[i] = fSongs[random];
-        fSongs[random] = str;
-    }
-
-    // Load first song
-    loadSong(fSongs.first());
-}
-
 void Musec::loadNext()
 {
-    // Remove song from queue
-    if (!fSongs.isEmpty())
-        fSongs.pop_front();
-
-    // Load next song
-    if (!fSongs.isEmpty())
-        loadSong(fSongs.first());
-    else
-        statusbar->showMessage(tr("No more songs left"));
-}
-
-void Musec::loadSong(const QString& filename)
-{
-    qDebug() << filename;
-    fStartTime = 0;
-    fPlayer->setMedia(QUrl::fromLocalFile(filename));
-    fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
-    statusbar->showMessage(tr("Played: %1 (%2 in queue)").arg(
-            fScore->played()).arg(fSongs.size()));
+    fPlaylist->removeMedia(fPlaylist->currentIndex());
+    if (fPlaylist->isEmpty())
+        statusbar->showMessage(tr("No songs left"));
 }
 
 void Musec::playSong()
@@ -210,18 +183,19 @@ void Musec::activateForm()
 
 void Musec::mediaStatusChanged(quint8 status)
 {
-    if (status == QMediaPlayer::InvalidMedia) {
-        qDebug() << "SKIP: Invalid media";
+    if (status == QMediaPlayer::InvalidMedia)
         loadNext();
-    }
     if (status != QMediaPlayer::LoadedMedia)
         return;
 
+    // Refresh data
     qint64 duration = fPlayer->duration();
+    fScore->updateMultiplier(slDifficulty->value(), fPlaylist->mediaCount());
+    statusbar->showMessage(tr("Played: %1 (%2 in queue)").arg(
+            fScore->played()).arg(fPlaylist->mediaCount()));
 
     // Skip if too short (<30s)
     if (duration <= 30000) {
-        qDebug() << "SKIP: Too short";
         loadNext();
         return;
     }
@@ -231,7 +205,6 @@ void Musec::mediaStatusChanged(quint8 status)
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
     if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
-        qDebug() << "SKIP: Not all tags";
         loadNext();
         return;
     }
@@ -239,6 +212,7 @@ void Musec::mediaStatusChanged(quint8 status)
     qDebug() << artist;
     qDebug() << album;
 
+    // Generate start time
     duration /= 1000;
     qint64 startRange = duration * 0.1f;
     qint64 timeRange = duration * 0.8f;
@@ -250,7 +224,10 @@ void Musec::mediaStatusChanged(quint8 status)
 
 void Musec::difficultyChanged(quint8 value)
 {
+    // Prevent difficulty cheating
     fPlayer->stop();
+
+    // Set time
     switch (value) {
     case kEasy:
         fTimer->setInterval(TIME_EASY * 1000);
@@ -264,7 +241,7 @@ void Musec::difficultyChanged(quint8 value)
         fTimer->setInterval(TIME_HARD * 1000);
         lblDifficulty->setText(QString::number(TIME_HARD) + "s");
     }
-    fScore->updateMultiplier(value, fSongs.size());
+    fScore->updateMultiplier(value, fPlaylist->mediaCount());
 }
 
 void Musec::multiplierChanged(float value)
@@ -294,7 +271,7 @@ void Musec::on_actAddDir_triggered()
 {
     statusbar->showMessage(tr("Loading..."));
 
-    // Open dir and add music files to fSongs
+    // Open dir and add music files to playlist
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
             fDir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (dir.isEmpty()) {
@@ -303,22 +280,23 @@ void Musec::on_actAddDir_triggered()
     }
     QDirIterator it(dir, fExtensions, QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext())
-        fSongs << it.next();
+        fPlaylist->addMedia(QUrl::fromLocalFile(it.next()));
     fDir = dir;
     setConfig("music/dir", fDir);
-    if (fSongs.isEmpty()) {
+    if (fPlaylist->isEmpty()) {
         statusbar->showMessage(tr("No Songs found"));
         return;
     }
 
-    shuffleList();
+    fPlaylist->shuffle();
+    fPlaylist->next();
 }
 
 void Musec::on_actAddFiles_triggered()
 {
     statusbar->showMessage(tr("Loading..."));
 
-    // Add music files to fSongs
+    // Add music files to playlist
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Files"),
             fDir, "Music (" + fExtensions.join(" ") + ")");
     if (files.isEmpty()) {
@@ -327,20 +305,18 @@ void Musec::on_actAddFiles_triggered()
     }
     fDir = QFileInfo(files[0]).absolutePath();
     setConfig("music/dir", fDir);
-    fSongs += files;
-    if (fSongs.isEmpty()) {
-        statusbar->showMessage(tr("No Songs found"));
-        return;
-    }
+    for (int i = 0; i < files.size(); i++)
+        fPlaylist->addMedia(QUrl::fromLocalFile(files.at(i)));
 
-    shuffleList();
+    fPlaylist->shuffle();
+    fPlaylist->next();
 }
 
 void Musec::on_actClear_triggered()
 {
     resetForm();
-    fSongs.clear();
-    statusbar->showMessage(tr("No more songs left"));
+    fPlaylist->clear();
+    statusbar->showMessage(tr("No songs left"));
 }
 
 void Musec::on_actStats_triggered()

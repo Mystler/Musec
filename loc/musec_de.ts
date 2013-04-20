@@ -16,10 +16,6 @@
         <translation>Nochmal</translation>
     </message>
     <message>
-        <source>No more songs left</source>
-        <translation>Keine weiteren Lieder übrig</translation>
-    </message>
-    <message>
         <source>Loading...</source>
         <translation>Laden...</translation>
     </message>
@@ -98,6 +94,10 @@
     <message>
         <source>Longest Streak: %1</source>
         <translation>Längste Serie: %1</translation>
+    </message>
+    <message>
+        <source>No songs left</source>
+        <translation>Keine Lieder übrig</translation>
     </message>
 </context>
 <context>

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ui_musec.h"
 
 class QMediaPlayer;
+class QMediaPlaylist;
 class QTimer;
 class Score;
 
@@ -36,15 +37,13 @@ public:
 private:
     Score* fScore;
     QMediaPlayer* fPlayer;
+    QMediaPlaylist* fPlaylist;
     QTimer* fTimer;
     QStringList fExtensions;
-    QStringList fSongs;
     QString fDir;
     qint64 fStartTime;
     bool fIsActive;
-    void shuffleList();
     void loadNext();
-    void loadSong(const QString& filename);
     void playSong();
     void evaluate();
     bool match(QString str1, QString str2);
