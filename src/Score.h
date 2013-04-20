@@ -46,6 +46,7 @@ public:
     quint32 correctArtists() { return fCorrectArtists; }
     quint32 correctAlbums() { return fCorrectAlbums; }
     quint32 correctSets() { return fCorrectSets; }
+    quint32 longestStreak() { return fLongestStreak; }
     float percentTitles() { return percentPlayed(fCorrectTitles); }
     float percentArtists() { return percentPlayed(fCorrectArtists); }
     float percentAlbums() { return percentPlayed(fCorrectAlbums); }
@@ -60,6 +61,8 @@ private:
     quint32 fCorrectArtists;
     quint32 fCorrectAlbums;
     quint32 fCorrectSets;
+    quint32 fLongestStreak;
+    quint32 fCurrentStreak;
     quint32 fDiffPlayed[kNumDifficulties];
     quint8 fDifficulty;
 

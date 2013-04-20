@@ -46,7 +46,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
     connect(fTimer, &QTimer::timeout, fPlayer, &QMediaPlayer::stop);
-    connect(fPlayer, &QMediaPlayer::durationChanged, this, &Musec::durationChanged);
+    connect(fPlayer, &QMediaPlayer::mediaStatusChanged, this, &Musec::mediaStatusChanged);
     connect(slDifficulty, &QSlider::valueChanged, this, &Musec::difficultyChanged);
 
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
@@ -76,8 +76,22 @@ void Musec::shuffleList()
     loadSong(fSongs.first());
 }
 
+void Musec::loadNext()
+{
+    // Remove song from queue
+    if (!fSongs.isEmpty())
+        fSongs.pop_front();
+
+    // Load next song
+    if (!fSongs.isEmpty())
+        loadSong(fSongs.first());
+    else
+        statusbar->showMessage(tr("No more songs left"));
+}
+
 void Musec::loadSong(const QString& filename)
 {
+    qDebug() << filename;
     fStartTime = 0;
     fPlayer->setMedia(QUrl::fromLocalFile(filename));
     fScore->updateMultiplier(slDifficulty->value(), fSongs.size());
@@ -100,15 +114,15 @@ void Musec::evaluate()
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
 
     bool mTitle = false, mArtist = false, mAlbum = false;
-    if (title.isEmpty() || match(edTitle->text(),  title)) {
+    if (match(edTitle->text(),  title)) {
         mTitle = true;
         chkTitle->setChecked(true);
     }
-    if (artist.isEmpty() || match(edArtist->text(),  artist)) {
+    if (match(edArtist->text(),  artist)) {
         mArtist = true;
         chkArtist->setChecked(true);
     }
-    if (album.isEmpty() || match(edAlbum->text(),  album)) {
+    if (match(edAlbum->text(),  album)) {
         mAlbum = true;
         chkAlbum->setChecked(true);
     }
@@ -194,23 +208,49 @@ void Musec::activateForm()
     chkAlbum->setChecked(false);
 }
 
-void Musec::durationChanged(qint64 duration)
+void Musec::mediaStatusChanged(quint8 status)
 {
-    if (duration <= 0)
+    if (status == QMediaPlayer::InvalidMedia) {
+        qDebug() << "SKIP: Invalid media";
+        loadNext();
+    }
+    if (status != QMediaPlayer::LoadedMedia)
         return;
+
+    qint64 duration = fPlayer->duration();
+
+    // Skip if too short (<30s)
+    if (duration <= 30000) {
+        qDebug() << "SKIP: Too short";
+        loadNext();
+        return;
+    }
+
+    // Skip songs without all tags
+    QString title = fPlayer->metaData(QMediaMetaData::Title).toString();
+    QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
+    QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
+    if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+        qDebug() << "SKIP: Not all tags";
+        loadNext();
+        return;
+    }
+    qDebug() << title;
+    qDebug() << artist;
+    qDebug() << album;
+
     duration /= 1000;
     qint64 startRange = duration * 0.1f;
     qint64 timeRange = duration * 0.8f;
     qint64 random = qrand() % timeRange;
     fStartTime = startRange + random;
-    qDebug() << fPlayer->metaData(QMediaMetaData::Title).toString();
-    qDebug() << fPlayer->metaData(QMediaMetaData::Author).toString();
-    qDebug() << fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
+
     btnPlay->setEnabled(true);
 }
 
-void Musec::difficultyChanged(int value)
+void Musec::difficultyChanged(quint8 value)
 {
+    fPlayer->stop();
     switch (value) {
     case kEasy:
         fTimer->setInterval(TIME_EASY * 1000);
@@ -244,18 +284,10 @@ void Musec::on_btnPlay_clicked()
 
 void Musec::on_btnNext_clicked()
 {
+    fPlayer->stop();
     evaluate();
     resetForm();
-
-    // Remove song from queue
-    if (!fSongs.isEmpty())
-        fSongs.pop_front();
-
-    // Load next song
-    if (!fSongs.isEmpty())
-        loadSong(fSongs.first());
-    else
-        statusbar->showMessage(tr("No more songs left"));
+    loadNext();
 }
 
 void Musec::on_actAddDir_triggered()
@@ -329,6 +361,7 @@ void Musec::on_actStats_triggered()
                     fScore->percentAlbums(), 0, 'f', 2) + "\n" +
             tr("Full: %1 (%2%)").arg(fScore->correctSets()).arg(
                     fScore->percentSets(), 0, 'f', 2) + "\n\n" +
+            tr("Longest Streak: %1").arg(fScore->longestStreak()) + "\n" +
             tr("Most played difficulty: %1").arg(
                     difficulties.at(fScore->averageDifficulty())));
 }

@@ -43,6 +43,7 @@ private:
     qint64 fStartTime;
     bool fIsActive;
     void shuffleList();
+    void loadNext();
     void loadSong(const QString& filename);
     void playSong();
     void evaluate();
@@ -51,8 +52,8 @@ private:
     void activateForm();
 
 private slots:
-    void durationChanged(qint64 duration);
-    void difficultyChanged(int value);
+    void mediaStatusChanged(quint8 status);
+    void difficultyChanged(quint8 value);
     void multiplierChanged(float value);
     void on_btnPlay_clicked();
     void on_btnNext_clicked();

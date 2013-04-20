@@ -35,6 +35,8 @@ Score::Score()
     fCorrectArtists = 0;
     fCorrectAlbums = 0;
     fCorrectSets = 0;
+    fLongestStreak = 0;
+    fCurrentStreak = 0;
     fDifficulty = kHard;
 
     for (quint8 i = 0; i < kNumDifficulties; i++)
@@ -59,8 +61,14 @@ void Score::addScore(bool title, bool artist, bool album)
         fLastScore += POINTS_ALBUM;
         fCorrectAlbums++;
     }
-    if (title && artist && album)
+    if (title && artist && album) {
         fCorrectSets++;
+        fCurrentStreak++;
+        if (fCurrentStreak > fLongestStreak)
+            fLongestStreak = fCurrentStreak;
+    } else {
+        fCurrentStreak = 0;
+    }
 
     fLastScore = fLastScore * fMultiplier + 0.5f;
     fScore += fLastScore;
@@ -68,7 +76,8 @@ void Score::addScore(bool title, bool artist, bool album)
 
 void Score::updateMultiplier(quint8 difficulty, quint32 songs)
 {
-    fMultiplier = 1.f + songs / 200.f;
+    // Multiplier for number of songs
+    fMultiplier = 1.f + songs / 1000.f;
 
     // Multiplier for difficulty
     fDifficulty = difficulty;
@@ -79,7 +88,10 @@ void Score::updateMultiplier(quint8 difficulty, quint32 songs)
     else if (fDifficulty == kEasy)
         fMultiplier *= MULTIPLIER_EASY;
     else
-        fMultiplier = 1.f;
+        fMultiplier *= 1.f;
+
+    // Streak bonus
+    fMultiplier *= 1.f + fCurrentStreak * 0.2f;
 
     emit multiplierChanged(fMultiplier);
 }
@@ -101,12 +113,12 @@ float Score::average()
 {
     if (fPlayed == 0)
         return 0.f;
-    return fScore / fPlayed;
+    return 1.f * fScore / fPlayed;
 }
 
 float Score::percentPlayed(quint32 count)
 {
     if (fPlayed == 0)
         return 0.f;
-    return 100 * count / fPlayed;
+    return 100.f * count / fPlayed;
 }

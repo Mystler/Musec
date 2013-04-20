@@ -95,6 +95,10 @@
         <source>Most played difficulty: %1</source>
         <translation>Häufigster Schwierigkeitsgrad: %1</translation>
     </message>
+    <message>
+        <source>Longest Streak: %1</source>
+        <translation>Längste Serie: %1</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
