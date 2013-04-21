@@ -343,6 +343,7 @@
     </property>
     <addaction name="actLangEn"/>
     <addaction name="actLangDe"/>
+    <addaction name="actLangFr"/>
    </widget>
    <addaction name="menuMusic"/>
    <addaction name="menuInfo"/>
@@ -382,11 +383,6 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actAboutQt">
-   <property name="text">
-    <string>About Qt</string>
-   </property>
-  </action>
   <action name="actLangEn">
    <property name="text">
     <string notr="true">English</string>
@@ -400,6 +396,11 @@
   <action name="actAddPlaylist">
    <property name="text">
     <string>Add Playlist...</string>
+   </property>
+  </action>
+  <action name="actLangFr">
+   <property name="text">
+    <string notr="true">Français</string>
    </property>
   </action>
  </widget>

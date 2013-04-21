@@ -107,6 +107,10 @@
         <source>Select Playlist</source>
         <translation>Playlist auswählen</translation>
     </message>
+    <message>
+        <source>Localization:</source>
+        <translation>Übersetzung:</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -161,10 +165,6 @@
     <message>
         <source>About</source>
         <translation>Über</translation>
-    </message>
-    <message>
-        <source>About Qt</source>
-        <translation>Über Qt</translation>
     </message>
     <message>
         <source>Score:</source>

@@ -391,5 +391,8 @@ void Musec::on_actAbout_triggered()
             "Musec\nVersion 1.0.0\n" +
             tr("Using Qt %1").arg(QT_VERSION_STR) + "\n" +
             tr("Created by") + " Florian Meißner 2013\n\n" +
+            tr("Localization:") + "\n" +
+            "(DE) Florian Meißner\n" +
+            "(FR) Lyrositor\n\n" +
             "www.mystler.eu/musec");
 }
