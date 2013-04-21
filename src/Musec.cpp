@@ -50,6 +50,8 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
     connect(fTimer, &QTimer::timeout, fPlayer, &QMediaPlayer::stop);
     connect(fPlayer, &QMediaPlayer::mediaStatusChanged, this, &Musec::mediaStatusChanged);
+    connect(fPlaylist, &QMediaPlaylist::loaded, this, &Musec::playlistLoaded);
+    connect(fPlaylist, &QMediaPlaylist::loadFailed, this, &Musec::playlistLoadFailed);
     connect(slDifficulty, &QSlider::valueChanged, this, &Musec::difficultyChanged);
 
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
@@ -249,6 +251,17 @@ void Musec::multiplierChanged(float value)
     lblMultiplierVal->setText(QString::number(value, 'f', 2));
 }
 
+void Musec::playlistLoaded()
+{
+    fPlaylist->shuffle();
+    fPlaylist->next();
+}
+
+void Musec::playlistLoadFailed()
+{
+    statusbar->showMessage(tr("Could not load playlist"));
+}
+
 void Musec::on_btnPlay_clicked()
 {
     // Activate input
@@ -290,6 +303,22 @@ void Musec::on_actAddDir_triggered()
 
     fPlaylist->shuffle();
     fPlaylist->next();
+}
+
+void Musec::on_actAddPlaylist_triggered()
+{
+    statusbar->showMessage(tr("Loading..."));
+
+    // Add m3u playlist to playlist
+    QString playlist = QFileDialog::getOpenFileName(this, tr("Select Playlist"),
+            fDir, "Playlist (*.m3u)");
+    if (playlist.isEmpty()) {
+        statusbar->clearMessage();
+        return;
+    }
+    fDir = QFileInfo(playlist).absolutePath();
+    setConfig("music/dir", fDir);
+    fPlaylist->load(QUrl::fromLocalFile(playlist));
 }
 
 void Musec::on_actAddFiles_triggered()

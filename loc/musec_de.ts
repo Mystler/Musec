@@ -99,6 +99,14 @@
         <source>No songs left</source>
         <translation>Keine Lieder übrig</translation>
     </message>
+    <message>
+        <source>Could not load playlist</source>
+        <translation>Playlist konnte nicht geladen werden</translation>
+    </message>
+    <message>
+        <source>Select Playlist</source>
+        <translation>Playlist auswählen</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -177,6 +185,10 @@
     <message>
         <source>Statistics</source>
         <translation>Statistik</translation>
+    </message>
+    <message>
+        <source>Add Playlist...</source>
+        <translation>Playlist hinzufügen...</translation>
     </message>
 </context>
 </TS>

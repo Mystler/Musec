@@ -54,9 +54,12 @@ private slots:
     void mediaStatusChanged(quint8 status);
     void difficultyChanged(quint8 value);
     void multiplierChanged(float value);
+    void playlistLoaded();
+    void playlistLoadFailed();
     void on_btnPlay_clicked();
     void on_btnNext_clicked();
     void on_actAddDir_triggered();
+    void on_actAddPlaylist_triggered();
     void on_actAddFiles_triggered();
     void on_actClear_triggered();
     void on_actStats_triggered();

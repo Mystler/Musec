@@ -321,6 +321,7 @@
      <string>Music</string>
     </property>
     <addaction name="actAddDir"/>
+    <addaction name="actAddPlaylist"/>
     <addaction name="actAddFiles"/>
     <addaction name="actClear"/>
    </widget>
@@ -394,6 +395,11 @@
   <action name="actLangDe">
    <property name="text">
     <string notr="true">Deutsch</string>
+   </property>
+  </action>
+  <action name="actAddPlaylist">
+   <property name="text">
+    <string>Add Playlist...</string>
    </property>
   </action>
  </widget>
