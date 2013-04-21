@@ -15,6 +15,7 @@ set(Musec_QRC ../res/musec.qrc)
 set(Musec_QUI ../res/musec.ui)
 set(Musec_TS
     ../loc/musec_de.ts
+    ../loc/musec_fr.ts
 )
 
 qt5_wrap_ui(Musec_UI ${Musec_QUI})

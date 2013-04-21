@@ -385,6 +385,13 @@ void Musec::on_actLangDe_triggered()
             "Sie müssen das Programm neustarten, damit die Änderung aktiv ist.");
 }
 
+void Musec::on_actLangFr_triggered()
+{
+    setConfig("lang", "fr");
+    QMessageBox::information(this, "Langue changée",
+            "Vous devez redémarrer le programme pour que le changement prenne effet.");
+}
+
 void Musec::on_actAbout_triggered()
 {
     QMessageBox::about(this, tr("About Musec"),
