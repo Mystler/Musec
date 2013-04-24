@@ -26,7 +26,7 @@ if(WIN32)
     set(Musec_RC ../res/musec.rc)
 endif()
 
-add_executable(Musec WIN32
+add_executable(Musec WIN32 MACOSX_BUNDLE
     ${Musec_MOC} ${Musec_SOURCES}
     ${Musec_UI} ${Musec_RES}
     ${Musec_RC} ${Musec_LOC}
