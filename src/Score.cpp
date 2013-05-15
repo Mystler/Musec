@@ -28,6 +28,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Score::Score()
 {
     fMultiplier = 0.f;
+    fDifficulty = kHard;
+    reset();
+}
+
+void Score::reset()
+{
     fScore = 0;
     fPlayed = 0;
     fLastScore = 0;
@@ -37,7 +43,6 @@ Score::Score()
     fCorrectSets = 0;
     fLongestStreak = 0;
     fCurrentStreak = 0;
-    fDifficulty = kHard;
 
     for (quint8 i = 0; i < kNumDifficulties; i++)
         fDiffPlayed[i] = 0;

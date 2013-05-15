@@ -33,6 +33,7 @@ class Score : public QObject {
 
 public:
     Score();
+    void reset();
     void addScore(bool title, bool artist, bool album);
     void updateMultiplier(quint8 difficulty, quint32 songs);
     quint8 averageDifficulty();
