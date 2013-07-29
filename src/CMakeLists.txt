@@ -32,7 +32,6 @@ add_executable(Musec WIN32 MACOSX_BUNDLE
     ${Musec_RC} ${Musec_LOC}
 )
 
-target_link_libraries(Musec ${Qt5Core_QTMAIN_LIBRARIES})
 qt5_use_modules(Musec Widgets Multimedia)
 
 source_group("Source Files" FILES ${Musec_SOURCES})
