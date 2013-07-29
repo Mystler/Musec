@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ui_musec.h"
 
+class QTranslator;
 class QMediaPlayer;
 class QMediaPlaylist;
 class QTimer;
@@ -35,6 +36,7 @@ public:
     static QString getConfig(const QString& key, const QString& defaultVal);
 
 private:
+    QTranslator* fTranslator;
     Score* fScore;
     QMediaPlayer* fPlayer;
     QMediaPlaylist* fPlaylist;
@@ -49,6 +51,8 @@ private:
     bool match(QString str1, QString str2);
     void resetForm();
     void activateForm();
+    void loadLanguage(const QString& lang);
+    void changeEvent(QEvent* event);
 
 private slots:
     void mediaStatusChanged(quint8 status);

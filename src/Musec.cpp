@@ -25,6 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QFileDialog>
 
+#define PROGRAM_AUTHOR "Mystler"
+#define PROGRAM_TITLE "Musec"
 #define TIME_EASY 5
 #define TIME_MEDIUM 3
 #define TIME_HARD 1
@@ -35,6 +37,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
             Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint |
             Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
+    fTranslator = new QTranslator();
     fScore = new Score();
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fPlaylist = new QMediaPlaylist();
@@ -44,6 +47,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fTimer->setInterval(TIME_HARD * 1000);
     fIsActive = false;
 
+    loadLanguage(getConfig("lang", QLocale::system().name()));
     fDir = getConfig("music/dir", QDir::homePath());
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
@@ -59,12 +63,12 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 
 void Musec::setConfig(const QString& key, const QString& value)
 {
-    QSettings("Mystler", "Musec").setValue(key, value);
+    QSettings(PROGRAM_AUTHOR, PROGRAM_TITLE).setValue(key, value);
 }
 
 QString Musec::getConfig(const QString& key, const QString& defaultVal)
 {
-    return QSettings("Mystler", "Musec").value(key, defaultVal).toString();
+    return QSettings(PROGRAM_AUTHOR, PROGRAM_TITLE).value(key, defaultVal).toString();
 }
 
 void Musec::loadNext()
@@ -181,6 +185,20 @@ void Musec::activateForm()
     chkTitle->setChecked(false);
     chkArtist->setChecked(false);
     chkAlbum->setChecked(false);
+}
+
+void Musec::loadLanguage(const QString& lang)
+{
+    qApp->removeTranslator(fTranslator);
+    fTranslator->load(QLocale(lang), "musec", "_", QApplication::applicationDirPath().append("/locales"));
+    setConfig("lang", lang);
+    qApp->installTranslator(fTranslator);
+}
+
+void Musec::changeEvent(QEvent* event)
+{
+    if (event->type() == QEvent::LanguageChange)
+        retranslateUi(this);
 }
 
 void Musec::mediaStatusChanged(quint8 status)
@@ -373,23 +391,17 @@ void Musec::on_actStats_triggered()
 
 void Musec::on_actLangEn_triggered()
 {
-    setConfig("lang", "en");
-    QMessageBox::information(this, "Language changed",
-            "You have to restart the program for the change to take effect.");
+    loadLanguage("en");
 }
 
 void Musec::on_actLangDe_triggered()
 {
-    setConfig("lang", "de");
-    QMessageBox::information(this, "Sprache geändert",
-            "Sie müssen das Programm neustarten, damit die Änderung aktiv ist.");
+    loadLanguage("de");
 }
 
 void Musec::on_actLangFr_triggered()
 {
-    setConfig("lang", "fr");
-    QMessageBox::information(this, "Langue changée",
-            "Vous devez redémarrer le programme pour que le changement prenne effet.");
+    loadLanguage("fr");
 }
 
 void Musec::on_actAbout_triggered()

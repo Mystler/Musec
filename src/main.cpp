@@ -23,14 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
-
-    // Localization
-    QLocale loc = Musec::getConfig("lang", QLocale::system().name());
-    QTranslator translator;
-    translator.load(loc, "musec", "_", "locales");
-    app.installTranslator(&translator);
-
-    // Load program
     Musec musec;
     musec.show();
     return app.exec();
