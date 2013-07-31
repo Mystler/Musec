@@ -6,7 +6,12 @@ SET escape_string_warning = off;
 
 CREATE TABLE scores (
     id serial,
-    user varchar(64),
-    date timestamp DEFAULT NOW,
-    average decimal
+    username varchar(64) NOT NULL,
+    scoredate timestamp DEFAULT NOW,
+    average decimal,
+    score integer,
+    played integer,
+    bingo integer,
+    streak integer,
+    difficulty varchar(32)
 );
