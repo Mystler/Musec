@@ -42,7 +42,6 @@ private:
     QMediaPlaylist* fPlaylist;
     QTimer* fTimer;
     QStringList fExtensions;
-    QString fDir;
     qint64 fStartTime;
     bool fIsActive;
     void loadNext();
@@ -67,6 +66,7 @@ private slots:
     void on_actAddFiles_triggered();
     void on_actClear_triggered();
     void on_actStats_triggered();
+    void on_actSubmit_triggered();
     void on_actLangEn_triggered();
     void on_actLangDe_triggered();
     void on_actLangFr_triggered();

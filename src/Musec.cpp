@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMediaPlaylist>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QInputDialog>
 
 #define PROGRAM_AUTHOR "Mystler"
 #define PROGRAM_TITLE "Musec"
@@ -48,7 +49,6 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fIsActive = false;
 
     loadLanguage(getConfig("lang", QLocale::system().name()));
-    fDir = getConfig("music/dir", QDir::homePath());
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
@@ -304,7 +304,8 @@ void Musec::on_actAddDir_triggered()
 
     // Open dir and add music files to playlist
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
-            fDir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+            getConfig("music/dir", QDir::homePath()), QFileDialog::ShowDirsOnly |
+            QFileDialog::DontResolveSymlinks);
     if (dir.isEmpty()) {
         statusbar->clearMessage();
         return;
@@ -312,8 +313,7 @@ void Musec::on_actAddDir_triggered()
     QDirIterator it(dir, fExtensions, QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext())
         fPlaylist->addMedia(QUrl::fromLocalFile(it.next()));
-    fDir = dir;
-    setConfig("music/dir", fDir);
+    setConfig("music/dir", dir);
     if (fPlaylist->isEmpty()) {
         statusbar->showMessage(tr("No Songs found"));
         return;
@@ -329,13 +329,12 @@ void Musec::on_actAddPlaylist_triggered()
 
     // Add m3u playlist to playlist
     QString playlist = QFileDialog::getOpenFileName(this, tr("Select Playlist"),
-            fDir, "Playlist (*.m3u)");
+            getConfig("music/dir", QDir::homePath()), "Playlist (*.m3u)");
     if (playlist.isEmpty()) {
         statusbar->clearMessage();
         return;
     }
-    fDir = QFileInfo(playlist).absolutePath();
-    setConfig("music/dir", fDir);
+    setConfig("music/dir", QFileInfo(playlist).absolutePath());
     fPlaylist->load(QUrl::fromLocalFile(playlist));
 }
 
@@ -345,13 +344,12 @@ void Musec::on_actAddFiles_triggered()
 
     // Add music files to playlist
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Files"),
-            fDir, "Music (" + fExtensions.join(" ") + ")");
+            getConfig("music/dir", QDir::homePath()), "Music (" + fExtensions.join(" ") + ")");
     if (files.isEmpty()) {
         statusbar->clearMessage();
         return;
     }
-    fDir = QFileInfo(files[0]).absolutePath();
-    setConfig("music/dir", fDir);
+    setConfig("music/dir", QFileInfo(files[0]).absolutePath());
     for (int i = 0; i < files.size(); i++)
         fPlaylist->addMedia(QUrl::fromLocalFile(files.at(i)));
 
@@ -387,6 +385,17 @@ void Musec::on_actStats_triggered()
             tr("Longest Streak: %1").arg(fScore->longestStreak()) + "\n" +
             tr("Most played difficulty: %1").arg(
                     difficulties.at(fScore->averageDifficulty())));
+}
+
+void Musec::on_actSubmit_triggered()
+{
+    bool ok;
+    QString username = QInputDialog::getText(this, tr("Submit your score"),
+            tr("Your score will be submitted under the following username:"),
+            QLineEdit::Normal, getConfig("username", QDir::home().dirName()), &ok);
+    if (ok && !username.isEmpty()) {
+        setConfig("username", username);
+    }
 }
 
 void Musec::on_actLangEn_triggered()

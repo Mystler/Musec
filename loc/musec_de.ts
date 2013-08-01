@@ -111,6 +111,14 @@
         <source>Localization:</source>
         <translation>Übersetzung:</translation>
     </message>
+    <message>
+        <source>Submit your score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your score will be submitted under the following username:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -189,6 +197,10 @@
     <message>
         <source>Add Playlist...</source>
         <translation>Playlist hinzufügen...</translation>
+    </message>
+    <message>
+        <source>Submit Score</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
