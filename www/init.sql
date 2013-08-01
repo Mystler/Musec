@@ -1,3 +1,5 @@
+\connect musec
+
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -15,3 +17,4 @@ CREATE TABLE scores (
     streak integer,
     difficulty varchar(32)
 );
+ALTER TABLE scores OWNER TO musec;

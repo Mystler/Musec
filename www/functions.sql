@@ -1,3 +1,5 @@
+\connect musec
+
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -17,21 +19,24 @@ CREATE OR REPLACE FUNCTION addScore(
 )
 RETURNS void AS $$
 DECLARE
-    existingEntry integer
+    existingEntry integer;
 BEGIN
     SELECT id INTO existingEntry FROM scores
-    WHERE username = inUser
+    WHERE lower(username) = lower(inUser);
     IF NOT FOUND THEN
         INSERT INTO scores(username, average, score, played, bingo, streak, difficulty)
         VALUES(inUser, inAverage, inScore, inPlayed, inBingo, inStreak, inDifficulty);
     ELSE
-        UPDATE SET average = inAverage,
+        UPDATE scores SET scoredate = now(),
+        average = inAverage,
         score = inScore,
         played = inPlayed,
         bingo = inBingo,
         streak = inStreak,
         difficulty = inDifficulty
-        WHERE username = inUser;
+        WHERE id = existingEntry;
     END IF;
 END;
 $$ LANGUAGE plpgsql;
+ALTER FUNCTION addScore(varchar(64), decimal, integer, integer, integer, integer,
+        varchar(64)) OWNER TO musec;
