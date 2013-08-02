@@ -44,18 +44,6 @@
         <translation>Benutzt Qt %1</translation>
     </message>
     <message>
-        <source>Hard (%1s)</source>
-        <translation>Schwer (%1s)</translation>
-    </message>
-    <message>
-        <source>Medium (%1s)</source>
-        <translation>Mittel (%1s)</translation>
-    </message>
-    <message>
-        <source>Easy (%1s)</source>
-        <translation>Leicht (%1s)</translation>
-    </message>
-    <message>
         <source>Statistics</source>
         <translation>Statistik</translation>
     </message>
@@ -113,11 +101,11 @@
     </message>
     <message>
         <source>Submit your score</source>
-        <translation type="unfinished"></translation>
+        <translation>Punktestand hochladen</translation>
     </message>
     <message>
         <source>Your score will be submitted under the following username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Punktestand wird unter folgendem Nutzernamen hochgeladen:</translation>
     </message>
 </context>
 <context>
@@ -200,7 +188,33 @@
     </message>
     <message>
         <source>Submit Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Punktestand hochladen</translation>
+    </message>
+</context>
+<context>
+    <name>NetMgr</name>
+    <message>
+        <source>Score submitted</source>
+        <translation>Punktestand hochgeladen</translation>
+    </message>
+    <message>
+        <source>Network Error</source>
+        <translation>Netzwerkfehler</translation>
+    </message>
+</context>
+<context>
+    <name>Score</name>
+    <message>
+        <source>Easy (%1s)</source>
+        <translation>Leicht (%1s)</translation>
+    </message>
+    <message>
+        <source>Medium (%1s)</source>
+        <translation>Mittel (%1s)</translation>
+    </message>
+    <message>
+        <source>Hard (%1s)</source>
+        <translation>Schwer (%1s)</translation>
     </message>
 </context>
 </TS>

@@ -44,18 +44,6 @@
         <translation>Sélectionner fichiers</translation>
     </message>
     <message>
-        <source>Hard (%1s)</source>
-        <translation>Difficile (%1s)</translation>
-    </message>
-    <message>
-        <source>Medium (%1s)</source>
-        <translation>Moyen (%1s)</translation>
-    </message>
-    <message>
-        <source>Easy (%1s)</source>
-        <translation>Facile (%1s)</translation>
-    </message>
-    <message>
         <source>Statistics</source>
         <translation>Statistiques</translation>
     </message>
@@ -201,6 +189,32 @@
     <message>
         <source>Submit Score</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetMgr</name>
+    <message>
+        <source>Score submitted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Score</name>
+    <message>
+        <source>Easy (%1s)</source>
+        <translation>Facile (%1s)</translation>
+    </message>
+    <message>
+        <source>Medium (%1s)</source>
+        <translation>Moyen (%1s)</translation>
+    </message>
+    <message>
+        <source>Hard (%1s)</source>
+        <translation>Difficile (%1s)</translation>
     </message>
 </context>
 </TS>
