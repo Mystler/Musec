@@ -16,13 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 
-#include <QApplication>
-#include "Musec.h"
+#ifndef Global_h
+#define Global_h
 
-int main(int argc, char* argv[])
-{
-    QApplication app(argc, argv);
-    Musec musec;
-    musec.show();
-    return app.exec();
-}
+#define SETTINGS_AUTHOR "Mystler"
+#define SETTINGS_TITLE "Musec"
+#define SCORE_URL "http://mystler.eu/musec/score"
+
+#define TIME_EASY 5
+#define TIME_MEDIUM 3
+#define TIME_HARD 1
+#define POINTS_TITLE 3
+#define POINTS_ARTIST 1
+#define POINTS_ALBUM 2
+#define MULTIPLIER_EASY 1
+#define MULTIPLIER_MEDIUM 2
+#define MULTIPLIER_HARD 4
+
+#endif

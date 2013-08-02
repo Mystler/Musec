@@ -16,13 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 
-#include <QApplication>
-#include "Musec.h"
+#ifndef NetMgr_h
+#define NetMgr_h
 
-int main(int argc, char* argv[])
-{
-    QApplication app(argc, argv);
-    Musec musec;
-    musec.show();
-    return app.exec();
-}
+#include <QObject>
+
+class QNetworkAccessManager;
+class QNetworkReply;
+class Score;
+
+class NetMgr : public QObject {
+    Q_OBJECT
+
+public:
+    NetMgr();
+    void submitScore(const QString& user, const Score* score);
+
+private:
+    QNetworkAccessManager* fAccessMgr;
+
+private slots:
+    void netReply(QNetworkReply* reply);
+
+signals:
+    void replied(bool success, QString msg);
+};
+#endif

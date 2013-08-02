@@ -17,13 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 
 #include "Score.h"
-
-#define POINTS_TITLE 3
-#define POINTS_ARTIST 1
-#define POINTS_ALBUM 2
-#define MULTIPLIER_EASY 1
-#define MULTIPLIER_MEDIUM 2
-#define MULTIPLIER_HARD 4
+#include "Global.h"
 
 Score::Score()
 {
@@ -101,7 +95,16 @@ void Score::updateMultiplier(quint8 difficulty, quint32 songs)
     emit multiplierChanged(fMultiplier);
 }
 
-quint8 Score::averageDifficulty()
+QString Score::difficultyString(quint8 difficulty) const
+{
+    switch (difficulty) {
+    case kEasy: return tr("Easy (%1s)").arg(TIME_EASY);
+    case kMedium: return tr("Medium (%1s)").arg(TIME_MEDIUM);
+    default: return tr("Hard (%1s)").arg(TIME_HARD);
+    }
+}
+
+quint8 Score::averageDifficulty() const
 {
     quint8 result = 0;
     quint32 highest = 0;
@@ -114,14 +117,14 @@ quint8 Score::averageDifficulty()
     return result;
 }
 
-float Score::average()
+float Score::average() const
 {
     if (fPlayed == 0)
         return 0.f;
     return 1.f * fScore / fPlayed;
 }
 
-float Score::percentPlayed(quint32 count)
+float Score::percentPlayed(quint32 count) const
 {
     if (fPlayed == 0)
         return 0.f;

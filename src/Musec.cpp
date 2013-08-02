@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Musec.h"
 #include "Score.h"
+#include "NetMgr.h"
+#include "Global.h"
 #include <QtGui>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
@@ -25,12 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QInputDialog>
-
-#define PROGRAM_AUTHOR "Mystler"
-#define PROGRAM_TITLE "Musec"
-#define TIME_EASY 5
-#define TIME_MEDIUM 3
-#define TIME_HARD 1
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
@@ -40,6 +38,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
             Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     fTranslator = new QTranslator();
     fScore = new Score();
+    fNetMgr = new NetMgr();
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fPlaylist = new QMediaPlaylist();
     fPlayer->setPlaylist(fPlaylist);
@@ -52,6 +51,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
+    connect(fNetMgr, &NetMgr::replied, this, &Musec::scoreSubmitted);
     connect(fTimer, &QTimer::timeout, fPlayer, &QMediaPlayer::stop);
     connect(fPlayer, &QMediaPlayer::mediaStatusChanged, this, &Musec::mediaStatusChanged);
     connect(fPlaylist, &QMediaPlaylist::loaded, this, &Musec::playlistLoaded);
@@ -63,12 +63,12 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 
 void Musec::setConfig(const QString& key, const QString& value)
 {
-    QSettings(PROGRAM_AUTHOR, PROGRAM_TITLE).setValue(key, value);
+    QSettings(SETTINGS_AUTHOR, SETTINGS_TITLE).setValue(key, value);
 }
 
 QString Musec::getConfig(const QString& key, const QString& defaultVal)
 {
-    return QSettings(PROGRAM_AUTHOR, PROGRAM_TITLE).value(key, defaultVal).toString();
+    return QSettings(SETTINGS_AUTHOR, SETTINGS_TITLE).value(key, defaultVal).toString();
 }
 
 void Musec::loadNext()
@@ -199,6 +199,13 @@ void Musec::changeEvent(QEvent* event)
 {
     if (event->type() == QEvent::LanguageChange)
         retranslateUi(this);
+}
+
+void Musec::scoreSubmitted(bool success, QString msg)
+{
+    if (success)
+        fScore->reset();
+    statusbar->showMessage(msg);
 }
 
 void Musec::mediaStatusChanged(quint8 status)
@@ -366,10 +373,6 @@ void Musec::on_actClear_triggered()
 
 void Musec::on_actStats_triggered()
 {
-    QStringList difficulties;
-    difficulties << tr("Hard (%1s)").arg(TIME_HARD);
-    difficulties << tr("Medium (%1s)").arg(TIME_MEDIUM);
-    difficulties << tr("Easy (%1s)").arg(TIME_EASY);
     QMessageBox::information(this, tr("Statistics"),
             tr("Played: %1").arg(fScore->played()) + "\n" +
             tr("Score: %1").arg(fScore->score()) + "\n" +
@@ -383,8 +386,7 @@ void Musec::on_actStats_triggered()
             tr("Full: %1 (%2%)").arg(fScore->correctSets()).arg(
                     fScore->percentSets(), 0, 'f', 2) + "\n\n" +
             tr("Longest Streak: %1").arg(fScore->longestStreak()) + "\n" +
-            tr("Most played difficulty: %1").arg(
-                    difficulties.at(fScore->averageDifficulty())));
+            tr("Most played difficulty: %1").arg(fScore->averageDifficultyString()));
 }
 
 void Musec::on_actSubmit_triggered()
@@ -395,6 +397,7 @@ void Musec::on_actSubmit_triggered()
             QLineEdit::Normal, getConfig("username", QDir::home().dirName()), &ok);
     if (ok && !username.isEmpty()) {
         setConfig("username", username);
+        fNetMgr->submitScore(username, fScore);
     }
 }
 

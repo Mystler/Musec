@@ -1,14 +1,17 @@
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
+find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
 set(Musec_HEADERS
     Musec.h
+    NetMgr.h
     Score.h
 )
 set(Musec_SOURCES
     main.cpp
     Musec.cpp
+    NetMgr.cpp
     Score.cpp
 )
 set(Musec_QRC ../res/musec.qrc)
@@ -32,7 +35,7 @@ add_executable(Musec WIN32 MACOSX_BUNDLE
     ${Musec_RC} ${Musec_LOC}
 )
 
-qt5_use_modules(Musec Widgets Multimedia)
+qt5_use_modules(Musec Widgets Multimedia Network)
 
 source_group("Source Files" FILES ${Musec_SOURCES})
 source_group("Resource Files" FILES

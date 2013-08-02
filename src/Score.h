@@ -36,22 +36,24 @@ public:
     void reset();
     void addScore(bool title, bool artist, bool album);
     void updateMultiplier(quint8 difficulty, quint32 songs);
-    quint8 averageDifficulty();
-    float average();
+    QString difficultyString(quint8 difficulty) const;
+    quint8 averageDifficulty() const;
+    float average() const;
 
-    float multiplier() { return fMultiplier; }
-    quint32 score() { return fScore; }
-    quint32 played() { return fPlayed; }
-    quint32 lastScore() { return fLastScore; }
-    quint32 correctTitles() { return fCorrectTitles; }
-    quint32 correctArtists() { return fCorrectArtists; }
-    quint32 correctAlbums() { return fCorrectAlbums; }
-    quint32 correctSets() { return fCorrectSets; }
-    quint32 longestStreak() { return fLongestStreak; }
-    float percentTitles() { return percentPlayed(fCorrectTitles); }
-    float percentArtists() { return percentPlayed(fCorrectArtists); }
-    float percentAlbums() { return percentPlayed(fCorrectAlbums); }
-    float percentSets() { return percentPlayed(fCorrectSets); }
+    float multiplier() const { return fMultiplier; }
+    quint32 score() const { return fScore; }
+    quint32 played() const { return fPlayed; }
+    quint32 lastScore() const { return fLastScore; }
+    quint32 correctTitles() const { return fCorrectTitles; }
+    quint32 correctArtists() const { return fCorrectArtists; }
+    quint32 correctAlbums() const { return fCorrectAlbums; }
+    quint32 correctSets() const { return fCorrectSets; }
+    quint32 longestStreak() const { return fLongestStreak; }
+    float percentTitles() const { return percentPlayed(fCorrectTitles); }
+    float percentArtists() const { return percentPlayed(fCorrectArtists); }
+    float percentAlbums() const { return percentPlayed(fCorrectAlbums); }
+    float percentSets() const { return percentPlayed(fCorrectSets); }
+    QString averageDifficultyString() const { return difficultyString(averageDifficulty()); }
 
 private:
     float fMultiplier;
@@ -67,7 +69,7 @@ private:
     quint32 fDiffPlayed[kNumDifficulties];
     quint8 fDifficulty;
 
-    float percentPlayed(quint32 count);
+    float percentPlayed(quint32 count) const;
 
 signals:
     void multiplierChanged(float value);

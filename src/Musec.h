@@ -21,11 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ui_musec.h"
 
-class QTranslator;
 class QMediaPlayer;
 class QMediaPlaylist;
 class QTimer;
+class QTranslator;
 class Score;
+class NetMgr;
 
 class Musec : public QMainWindow, private Ui::MusecMainWindow {
     Q_OBJECT
@@ -38,6 +39,7 @@ public:
 private:
     QTranslator* fTranslator;
     Score* fScore;
+    NetMgr* fNetMgr;
     QMediaPlayer* fPlayer;
     QMediaPlaylist* fPlaylist;
     QTimer* fTimer;
@@ -54,6 +56,7 @@ private:
     void changeEvent(QEvent* event);
 
 private slots:
+    void scoreSubmitted(bool success, QString msg);
     void mediaStatusChanged(quint8 status);
     void difficultyChanged(quint8 value);
     void multiplierChanged(float value);
