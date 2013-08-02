@@ -8,7 +8,7 @@
     $mdiff = $_POST["diff"];
 
     if (!isset($muser) || !isset($mavg) || !isset($mscore) || !isset($mplayed) ||
-        !isset($mbingo) || !isset($mstreak) || !isset($mdiff))
+            !isset($mbingo) || !isset($mstreak) || !isset($mdiff))
         die("Invalid request!");
 
     require_once "config.ini.php";
