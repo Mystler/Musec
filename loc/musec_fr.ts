@@ -101,11 +101,11 @@
     </message>
     <message>
         <source>Submit your score</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer votre score</translation>
     </message>
     <message>
         <source>Your score will be submitted under the following username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Votre score sera enregistré au nom de:</translation>
     </message>
 </context>
 <context>
@@ -188,18 +188,18 @@
     </message>
     <message>
         <source>Submit Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer score</translation>
     </message>
 </context>
 <context>
     <name>NetMgr</name>
     <message>
         <source>Score submitted</source>
-        <translation type="unfinished"></translation>
+        <translation>Score enregistré</translation>
     </message>
     <message>
         <source>Network Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de réseau</translation>
     </message>
 </context>
 <context>
