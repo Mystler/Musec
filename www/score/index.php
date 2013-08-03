@@ -26,8 +26,8 @@ in the client. Entries for existing users will be overwritten.<br><br>
 <table class="center" border="1">
     <tr>
         <th class="left">User</th>
-        <th>Average</th>
         <th>Score</th>
+        <th>Average</th>
         <th>Played</th>
         <th>Bingo!</th>
         <th>Streak</th>
@@ -43,9 +43,9 @@ in the client. Entries for existing users will be overwritten.<br><br>
         exit;
     }
 
-    $result = pg_query($dbconn, "SELECT username, average, score, played, bingo, streak,
+    $result = pg_query($dbconn, "SELECT username, score, average, played, bingo, streak,
             difficulty, to_char(scoredate, 'DD Mon YYYY, HH12:MI AM') FROM scores
-            ORDER BY average DESC, score ASC, streak ASC, bingo ASC, played ASC");
+            ORDER BY score DESC, average DESC, streak DESC, bingo DESC, played DESC");
     if (!$result) {
         echo "Error on fetching data!";
         pg_close($dbconn);
