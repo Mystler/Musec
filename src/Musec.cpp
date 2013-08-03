@@ -111,9 +111,7 @@ void Musec::evaluate()
     edArtist->setText(artist);
     edAlbum->setText(album);
 
-    lblScoreVal->setText(QString::number(fScore->score()));
-    lblAverageVal->setText(QString::number(fScore->average(), 'f', 2));
-    lblLastVal->setText(QString::number(fScore->lastScore()));
+    updateLabels();
 }
 
 bool Musec::match(QString str1, QString str2)
@@ -154,6 +152,13 @@ bool Musec::match(QString str1, QString str2)
         return true;
 
     return false;
+}
+
+void Musec::updateLabels()
+{
+    lblScoreVal->setText(QString::number(fScore->score()));
+    lblAverageVal->setText(QString::number(fScore->average(), 'f', 2));
+    lblLastVal->setText(QString::number(fScore->lastScore()));
 }
 
 void Musec::resetForm()
@@ -203,8 +208,11 @@ void Musec::changeEvent(QEvent* event)
 
 void Musec::scoreSubmitted(bool success, QString msg)
 {
-    if (success)
+    if (success) {
         fScore->reset();
+        fScore->updateMultiplier(slDifficulty->value(), fPlaylist->mediaCount());
+        updateLabels();
+    }
     statusbar->showMessage(msg);
 }
 
@@ -391,6 +399,10 @@ void Musec::on_actStats_triggered()
 
 void Musec::on_actSubmit_triggered()
 {
+    if (fScore->played() < 10) {
+        QMessageBox::critical(this, tr("Error"), tr("You need to play at least 10 songs to submit your score!"));
+        return;
+    }
     bool ok;
     QString username = QInputDialog::getText(this, tr("Submit your score"),
             tr("Your score will be submitted under the following username:"),

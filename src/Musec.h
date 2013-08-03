@@ -50,6 +50,7 @@ private:
     void playSong();
     void evaluate();
     bool match(QString str1, QString str2);
+    void updateLabels();
     void resetForm();
     void activateForm();
     void loadLanguage(const QString& lang);
