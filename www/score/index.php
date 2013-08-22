@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 ?>
 <html>
-<head><title>Musec Score</title>
+<head>
+<title>Musec Score</title>
+<meta charset="UTF-8">
 <style>
 body {
     text-align: center;
