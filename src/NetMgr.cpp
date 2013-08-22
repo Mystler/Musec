@@ -30,10 +30,9 @@ NetMgr::NetMgr()
 
 void NetMgr::submitScore(const QString& user, const Score* score)
 {
-    QUrl url(SCORE_URL "/submit.php");
-    QByteArray postData;
-    QNetworkRequest request(url);
+    QNetworkRequest request(QUrl(SCORE_URL "/submit"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QByteArray postData;
     postData.append(QString("user=%1&").arg(user));
     postData.append(QString("avg=%1&").arg(score->average(), 0, 'f', 2));
     postData.append(QString("score=%1&").arg(score->score()));
