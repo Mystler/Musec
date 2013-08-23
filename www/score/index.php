@@ -26,21 +26,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Musec Scoreboard</h1>
-    Welcome to the Musec scoreboard.<br>
-    If you want to add your own score, you can do so by clicking <i>Info->Submit Score</i>
-    in the client. Entries for existing users will be overwritten.<br><br>
-    <table>
-        <tr>
-            <th class="left">User</th>
-            <th>Score</th>
-            <th>Average</th>
-            <th>Played</th>
-            <th>Bingo!</th>
-            <th>Streak</th>
-            <th>Difficulty</th>
-            <th class="left">Date</th>
-        </tr>
+    <div id="container">
+        <h1>Musec Scoreboard</h1>
+        Welcome to the Musec scoreboard.<br>
+        If you want to add your own score, you can do so by clicking <i>Info->Submit Score</i>
+        in the client. Entries for existing users will be overwritten.<br><br>
+        <table>
+            <tr>
+                <th class="left">User</th>
+                <th>Score</th>
+                <th>Average</th>
+                <th>Played</th>
+                <th>Bingo!</th>
+                <th>Streak</th>
+                <th>Difficulty</th>
+                <th class="left">Date</th>
+            </tr>
 <?php
 require_once "config.ini.php";
 
@@ -61,21 +62,22 @@ if (!$result) {
 
 while ($row = pg_fetch_row($result)) {
 ?>
-        <tr>
-            <td class="left"><?php echo $row[0]; ?></td>
-            <td><?php echo $row[1];?></td>
-            <td><?php echo $row[2];?></td>
-            <td><?php echo $row[3];?></td>
-            <td><?php echo $row[4];?></td>
-            <td><?php echo $row[5];?></td>
-            <td><?php echo $row[6];?></td>
-            <td class="left"><?php echo $row[7]; ?></td>
-        </tr>
+            <tr>
+                <td class="left"><?php echo $row[0]; ?></td>
+                <td><?php echo $row[1];?></td>
+                <td><?php echo $row[2];?></td>
+                <td><?php echo $row[3];?></td>
+                <td><?php echo $row[4];?></td>
+                <td><?php echo $row[5];?></td>
+                <td><?php echo $row[6];?></td>
+                <td class="left"><?php echo $row[7]; ?></td>
+            </tr>
 <?php
 }
 pg_free_result($result);
 
 pg_close($dbconn);
 ?>
-    </table>
+        </table>
+    </div>
 </body>

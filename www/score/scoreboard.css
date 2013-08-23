@@ -21,10 +21,16 @@ body {
     background-size: 100% 100%;
     background-attachment: fixed;
     color: #EEEEEE;
-    text-align: center;
     font-family: 'Droid Sans', Arial, sans-serif;
-    font-size: 13px;
+    font-size: 0.9em;
     line-height: 1.4em;
+}
+
+#container {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 h1 {
