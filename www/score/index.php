@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <title>Musec Score</title>
     <link href="scoreboard.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <meta charset="UTF-8">
 </head>
 <body>
