@@ -66,6 +66,7 @@ tbody:last-child  tr:last-child td:last-child { border-bottom-right-radius: 12px
 
 .left { text-align: left; }
 img { border: none; }
-a:link, a:active { color:#FFCC33; }
+a:link { color:#FFCC33; }
 a:visited { color:#CC8811; }
 a:hover { color:#FFEEAA; }
+a:active { color:#FFFFCC; }
