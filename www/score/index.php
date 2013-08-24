@@ -32,48 +32,74 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         If you want to add your own score, you can do so by clicking <i>Info->Submit Score</i>
         in the client. Entries for existing users will be overwritten.<br><br>
         <table>
-            <tr>
-                <th class="left">User</th>
-                <th>Score</th>
-                <th>Average</th>
-                <th>Played</th>
-                <th>Bingo!</th>
-                <th>Streak</th>
-                <th>Difficulty</th>
-                <th class="left">Date</th>
-            </tr>
+            <tbody>
+                <tr>
+                    <th class="left">User</th>
+                    <th>Score</th>
+                    <th>Average</th>
+                    <th>Played</th>
+                    <th>Bingo!</th>
+                    <th>Streak</th>
+                    <th>Difficulty</th>
+                    <th class="left">Date</th>
+                </tr>
+            </tbody>
 <?php
 require_once "config.ini.php";
 
 $dbconn = pg_connect("host={$dbhost} dbname={$dbname} user={$dbuser} password={$dbpass}");
-if (!$dbconn) {
-    echo "Database connection error!";
-    exit;
-}
+if (!$dbconn)
+    die("Database connection error!");
 
 $result = pg_query($dbconn, "SELECT username, score, average, played, bingo, streak,
         difficulty, to_char(scoredate, 'DD Mon YYYY, HH12:MI AM') FROM scores
         ORDER BY score DESC, average DESC, streak DESC, bingo DESC, played DESC");
 if (!$result) {
-    echo "Error on fetching data!";
     pg_close($dbconn);
-    exit;
+    die("Error on fetching data!");
 }
-
 while ($row = pg_fetch_row($result)) {
 ?>
-            <tr>
-                <td class="left"><?php echo $row[0]; ?></td>
-                <td><?php echo $row[1];?></td>
-                <td><?php echo $row[2];?></td>
-                <td><?php echo $row[3];?></td>
-                <td><?php echo $row[4];?></td>
-                <td><?php echo $row[5];?></td>
-                <td><?php echo $row[6];?></td>
-                <td class="left"><?php echo $row[7]; ?></td>
-            </tr>
+            <tbody class="userentry">
+                <tr>
+                    <td class="left"><?php echo $row[0]; ?></td>
+                    <td><?php echo $row[1];?></td>
+                    <td><?php echo $row[2];?></td>
+                    <td><?php echo $row[3];?></td>
+                    <td><?php echo $row[4];?></td>
+                    <td><?php echo $row[5];?></td>
+                    <td><?php echo $row[6];?></td>
+                    <td class="left"><?php echo $row[7]; ?></td>
+                </tr>
+                <tr class="userdetails">
+                    <td colspan="8">TODO</td>
+                </tr>
+            </tbody>
 <?php
 }
+pg_free_result($result);
+
+$result = pg_query($dbconn, "SELECT SUM(score), round(SUM(score) / SUM(played)::decimal, 2),
+        SUM(played), SUM(bingo), SUM(streak) FROM scores");
+if (!$result) {
+    pg_close($dbconn);
+    die("Error on fetching data!");
+}
+$row = pg_fetch_row($result, 0);
+?>
+            <tbody>
+                <tr>
+                    <td class="left"><b>Total</b></td>
+                    <td><b><?php echo $row[0];?></b></td>
+                    <td><b><?php echo $row[1];?></b></td>
+                    <td><b><?php echo $row[2];?></b></td>
+                    <td><b><?php echo $row[3];?></b></td>
+                    <td><b><?php echo $row[4];?></b></td>
+                    <td></td>
+                    <td class="left"></td>
+                </tr>
+            </tbody>
+<?php
 pg_free_result($result);
 
 pg_close($dbconn);

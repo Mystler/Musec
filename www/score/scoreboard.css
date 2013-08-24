@@ -28,8 +28,7 @@ body {
 
 #container {
     width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     text-align: center;
 }
 
@@ -38,23 +37,32 @@ h1 {
     text-shadow: 0px 0px 6px #222222;
 }
 
-table, th, td {
-    padding: 6px;
-    border: 2px solid #EEEEEE;
+table {
+    margin:auto;
+    width: 1000px;
+    box-shadow: 0px 0px 25px #222222;
+    border-radius: 12px;
+    border-spacing: 0px;
+    background-color: rgba(238, 238, 238, 0.2);
 }
 
-table {
-    margin-left:auto;
-    margin-right:auto;
-    width: 1000px;
-    border-collapse: collapse;
-    box-shadow: 0px 0px 25px #222222;
+th, td {
+    padding: 6px;
+    border: 1px solid #EEEEEE;
 }
 
 th {
     font-size: 1.4em;
     text-shadow: 0px 0px 6px #222222;
 }
+
+tr.userdetails { display: none; }
+tbody.userentry:hover tr.userdetails { display: table-row; }
+
+tbody:first-child  tr:first-child th:first-child { border-top-left-radius: 12px; }
+tbody:first-child  tr:first-child th:last-child { border-top-right-radius: 12px; }
+tbody:last-child  tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+tbody:last-child  tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
 .left { text-align: left; }
 img { border: none; }
