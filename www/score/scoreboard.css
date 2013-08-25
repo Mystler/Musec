@@ -57,7 +57,12 @@ th {
 }
 
 tr.userdetails { display: none; }
-tbody.userentry:hover tr.userdetails { display: table-row; }
+tbody.userentry:hover tr:first-child { background-color: rgba(238, 238, 238, 0.5); }
+
+tbody.userentry:hover tr.userdetails {
+    display: table-row;
+    background-color: rgba(238, 238, 238, 0.3);
+}
 
 tbody:first-child  tr:first-child th:first-child { border-top-left-radius: 12px; }
 tbody:first-child  tr:first-child th:last-child { border-top-right-radius: 12px; }
