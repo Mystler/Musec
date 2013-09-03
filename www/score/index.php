@@ -21,7 +21,7 @@ require_once "config.ini.php";
 
 function get($user) {
     global $dbconn;
-    $result = pg_query($dbconn, "SELECT score FROM scores WHERE lower(username) = lower('{$user}')");
+    $result = pg_query_params($dbconn, "SELECT score FROM scores WHERE lower(username) = lower($1)", array($user));
     if ($score = pg_fetch_result($result, 0)) {
         echo $score;
         pg_free_result($result);
@@ -46,8 +46,8 @@ function post() {
         return;
     }
 
-    $result = pg_query($dbconn, "SELECT addscore('{$muser}', {$mavg}, {$mscore}, {$mplayed},
-            {$mbingo}, {$mstreak}, '{$mdiff}')");
+    $result = pg_query_params($dbconn, "SELECT addscore($1, $2, $3, $4, $5, $6, $7)", array($muser, $mavg, $mscore,
+            $mplayed, $mbingo, $mstreak, $mdiff));
     if (!$result) {
         header("HTTP/1.1 409 Conflict");
     } else {
