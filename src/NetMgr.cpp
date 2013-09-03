@@ -30,7 +30,7 @@ NetMgr::NetMgr()
 
 void NetMgr::submitScore(const QString& user, const Score* score)
 {
-    QNetworkRequest request(QUrl(SCORE_URL "/submit"));
+    QNetworkRequest request(QUrl(SCORE_URL));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray postData;
     postData.append(QString("user=%1&").arg(user));

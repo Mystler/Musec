@@ -16,6 +16,48 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
+
+require_once "config.ini.php";
+
+function get($user) {
+    global $dbconn;
+    $result = pg_query($dbconn, "SELECT score FROM scores WHERE lower(username) = lower('{$user}')");
+    if ($score = pg_fetch_result($result, 0)) {
+        echo $score;
+        pg_free_result($result);
+    } else {
+        header("HTTP/1.1 404 Not Found");
+    }
+}
+
+function post() {
+    global $dbconn;
+    $muser = $_POST["user"];
+    $mavg = $_POST["avg"];
+    $mscore = $_POST["score"];
+    $mplayed = $_POST["played"];
+    $mbingo = $_POST["bingo"];
+    $mstreak = $_POST["streak"];
+    $mdiff = $_POST["diff"];
+
+    if (!isset($muser) || !isset($mavg) || !isset($mscore) || !isset($mplayed) ||
+            !isset($mbingo) || !isset($mstreak) || !isset($mdiff)) {
+        header("HTTP/1.1 400 Bad Request");
+        return;
+    }
+
+    $result = pg_query($dbconn, "SELECT addscore('{$muser}', {$mavg}, {$mscore}, {$mplayed},
+            {$mbingo}, {$mstreak}, '{$mdiff}')");
+    if (!$result) {
+        header("HTTP/1.1 409 Conflict");
+    } else {
+        header("HTTP/1.1 200 OK");
+        pg_free_result($result);
+    }
+}
+
+function scoreboard() {
+    global $dbconn;
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,20 +88,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 </tr>
             </tbody>
 <?php
-require_once "config.ini.php";
-
-$dbconn = pg_connect("host={$dbhost} dbname={$dbname} user={$dbuser} password={$dbpass}");
-if (!$dbconn)
-    die("Database connection error!");
-
-$result = pg_query($dbconn, "SELECT username, score, average, played, bingo, streak,
-        difficulty, to_char(scoredate, 'DD Mon YYYY, HH12:MI AM') FROM scores
-        ORDER BY score DESC, average DESC, streak DESC, bingo DESC, played DESC");
-if (!$result) {
-    pg_close($dbconn);
-    die("Error on fetching data!");
-}
-while ($row = pg_fetch_row($result)) {
+    $result = pg_query($dbconn, "SELECT username, score, average, played, bingo, streak,
+            difficulty, to_char(scoredate, 'DD Mon YYYY, HH12:MI AM') FROM scores
+            ORDER BY score DESC, average DESC, streak DESC, bingo DESC, played DESC");
+    if (!$result) {
+        header("HTTP/1.1 404 Not Found");
+        return;
+    } else {
+        while ($row = pg_fetch_row($result)) {
 ?>
             <tbody class="userentry">
                 <tr>
@@ -72,21 +108,15 @@ while ($row = pg_fetch_row($result)) {
                     <td><?php echo $row[6];?></td>
                     <td class="left"><?php echo $row[7]; ?></td>
                 </tr>
-                <tr class="userdetails">
-                    <td colspan="8">TODO</td>
-                </tr>
             </tbody>
 <?php
-}
-pg_free_result($result);
+        }
+        pg_free_result($result);
+    }
 
-$result = pg_query($dbconn, "SELECT SUM(score), round(SUM(score) / SUM(played)::decimal, 2),
-        SUM(played), SUM(bingo), SUM(streak) FROM scores");
-if (!$result) {
-    pg_close($dbconn);
-    die("Error on fetching data!");
-}
-$row = pg_fetch_row($result, 0);
+    $result = pg_query($dbconn, "SELECT SUM(score), round(SUM(score) / SUM(played)::decimal, 2),
+            SUM(played), SUM(bingo), SUM(streak) FROM scores");
+    if ($row = pg_fetch_row($result)) {
 ?>
             <tbody>
                 <tr>
@@ -101,10 +131,39 @@ $row = pg_fetch_row($result, 0);
                 </tr>
             </tbody>
 <?php
-pg_free_result($result);
-
-pg_close($dbconn);
+        pg_free_result($result);
+    } else {
+        header("HTTP/1.1 404 Not Found");
+        return;
+    }
 ?>
         </table>
     </div>
 </body>
+<?php
+}
+
+$dbconn = pg_connect("host={$dbhost} dbname={$dbname} user={$dbuser} password={$dbpass}");
+if (!$dbconn) {
+    header("HTTP/1.1 503 Service Unavailable");
+    exit;
+}
+
+header("Content-Type: text/html; charset=UTF-8");
+
+switch($_SERVER["REQUEST_METHOD"]) {
+case "GET":
+    if (isset($_GET["user"]))
+        get($_GET["user"]);
+    else
+        scoreboard();
+    break;
+case "POST":
+    post();
+    break;
+default:
+    header("HTTP/1.1 405 Method Not Allowed");
+}
+
+pg_close($dbconn);
+?>
