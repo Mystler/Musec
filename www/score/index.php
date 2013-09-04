@@ -22,7 +22,7 @@ require_once "config.ini.php";
 function get($user) {
     global $dbconn;
     $result = pg_query_params($dbconn, "SELECT score FROM scores WHERE lower(username) = lower($1)", array($user));
-    if ($score = pg_fetch_result($result, 0)) {
+    if (($score = pg_fetch_result($result, 0)) !== false) {
         echo $score;
         pg_free_result($result);
     } else {
