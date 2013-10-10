@@ -1,3 +1,4 @@
 build*/
 dist*/
 *.kdev4
+www/score/config.ini.php
