@@ -198,6 +198,10 @@
         <source>Submit Score</source>
         <translation>Punktestand hochladen</translation>
     </message>
+    <message>
+        <source>View Scoreboard</source>
+        <translation>Punktetafel ansehen</translation>
+    </message>
 </context>
 <context>
     <name>NetMgr</name>

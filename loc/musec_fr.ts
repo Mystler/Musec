@@ -198,6 +198,10 @@
         <source>Submit Score</source>
         <translation>Enregistrer score</translation>
     </message>
+    <message>
+        <source>View Scoreboard</source>
+        <translation>Voir Scoreboard</translation>
+    </message>
 </context>
 <context>
     <name>NetMgr</name>

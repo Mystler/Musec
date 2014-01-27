@@ -422,6 +422,11 @@ void Musec::on_actSubmit_triggered()
     }
 }
 
+void Musec::on_actViewScoreboard_triggered()
+{
+    QDesktopServices::openUrl(QUrl(SCORE_URL));
+}
+
 void Musec::on_actLangEn_triggered()
 {
     loadLanguage("en");

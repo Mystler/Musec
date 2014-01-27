@@ -331,6 +331,7 @@
     </property>
     <addaction name="actStats"/>
     <addaction name="actSubmit"/>
+    <addaction name="actViewScoreboard"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -407,6 +408,11 @@
   <action name="actSubmit">
    <property name="text">
     <string>Submit Score</string>
+   </property>
+  </action>
+  <action name="actViewScoreboard">
+   <property name="text">
+    <string>View Scoreboard</string>
    </property>
   </action>
  </widget>
