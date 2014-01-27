@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR" sourcelanguage="en">
+<TS version="2.1" language="fr_FR" sourcelanguage="en">
 <context>
     <name>Musec</name>
     <message>
@@ -107,6 +107,14 @@
         <source>Your score will be submitted under the following username:</source>
         <translation>Votre score sera enregistré au nom de:</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <source>You need to play at least 10 songs to submit your score!</source>
+        <translation>Vous devez écouter au moins 10 morceaux de musique pour soumettre votre score!</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -200,6 +208,15 @@
     <message>
         <source>Network Error</source>
         <translation>Erreur de réseau</translation>
+    </message>
+    <message>
+        <source>Found existing entry!</source>
+        <translation>Éntrée existante trouvée!</translation>
+    </message>
+    <message>
+        <source>There already is a better score for you.
+Are you sure you want to submit?</source>
+        <translation>Un meilleur score est enregistré actuellement. Êtes-vous certain de vouloir soumettre celui-ci?</translation>
     </message>
 </context>
 <context>
