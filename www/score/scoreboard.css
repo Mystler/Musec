@@ -27,7 +27,7 @@ body {
 }
 
 #container {
-    width: 1000px;
+    max-width: 1000px;
     margin: auto;
     text-align: center;
 }
@@ -39,7 +39,7 @@ h1 {
 
 table {
     margin:auto;
-    width: 1000px;
+    max-width: 1000px;
     box-shadow: 0px 0px 25px #222222;
     border-radius: 12px;
     border-spacing: 0px;

@@ -73,7 +73,7 @@ function scoreboard() {
         <h1>Musec Scoreboard</h1>
         Welcome to the Musec scoreboard.<br>
         If you want to add your own score, you can do so by clicking <i>Info->Submit Score</i>
-        in the client. Entries for existing users will be overwritten.<br><br>
+        in the client.<br><br>
         <table>
             <tbody>
                 <tr>
