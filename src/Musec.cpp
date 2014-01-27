@@ -27,8 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QInputDialog>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
@@ -38,7 +36,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
             Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
     fTranslator = new QTranslator();
     fScore = new Score();
-    fNetMgr = new NetMgr();
+    fNetMgr = new NetMgr(this);
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
     fPlaylist = new QMediaPlaylist();
     fPlayer->setPlaylist(fPlaylist);
@@ -51,7 +49,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
 
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
-    connect(fNetMgr, &NetMgr::replied, this, &Musec::scoreSubmitted);
+    connect(fNetMgr, &NetMgr::done, this, &Musec::scoreSubmitted);
     connect(fTimer, &QTimer::timeout, fPlayer, &QMediaPlayer::stop);
     connect(fPlayer, &QMediaPlayer::mediaStatusChanged, this, &Musec::mediaStatusChanged);
     connect(fPlaylist, &QMediaPlaylist::loaded, this, &Musec::playlistLoaded);
@@ -59,6 +57,16 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     connect(slDifficulty, &QSlider::valueChanged, this, &Musec::difficultyChanged);
 
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+}
+
+Musec::~Musec()
+{
+    delete fTimer;
+    delete fPlaylist;
+    delete fPlayer;
+    delete fNetMgr;
+    delete fScore;
+    delete fTranslator;
 }
 
 void Musec::setConfig(const QString& key, const QString& value)
@@ -74,8 +82,10 @@ QString Musec::getConfig(const QString& key, const QString& defaultVal)
 void Musec::loadNext()
 {
     fPlaylist->removeMedia(fPlaylist->currentIndex());
-    if (fPlaylist->isEmpty())
+    if (fPlaylist->isEmpty()) {
         statusbar->showMessage(tr("No songs left"));
+        btnPlay->setDisabled(true);
+    }
 }
 
 void Musec::playSong()
@@ -165,7 +175,6 @@ void Musec::resetForm()
 {
     fIsActive = false;
     btnPlay->setText(tr("Play"));
-    btnPlay->setDisabled(true);
     btnNext->setDisabled(true);
     edTitle->setDisabled(true);
     edArtist->setDisabled(true);

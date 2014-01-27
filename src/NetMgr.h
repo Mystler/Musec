@@ -22,23 +22,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 
 class QNetworkAccessManager;
-class QNetworkReply;
 class Score;
 
 class NetMgr : public QObject {
     Q_OBJECT
 
 public:
-    NetMgr();
+    NetMgr(QWidget* parent = nullptr);
+    ~NetMgr();
     void submitScore(const QString& user, const Score* score);
 
 private:
+    QWidget* fParent;
     QNetworkAccessManager* fAccessMgr;
 
-private slots:
-    void netReply(QNetworkReply* reply);
-
 signals:
-    void replied(bool success, QString msg);
+    void done(bool success, QString msg);
 };
 #endif

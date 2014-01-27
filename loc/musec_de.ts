@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de_DE" sourcelanguage="en">
+<TS version="2.1" language="de_DE" sourcelanguage="en">
 <context>
     <name>Musec</name>
     <message>
@@ -107,6 +107,14 @@
         <source>Your score will be submitted under the following username:</source>
         <translation>Der Punktestand wird unter folgendem Nutzernamen hochgeladen:</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation>Fehler</translation>
+    </message>
+    <message>
+        <source>You need to play at least 10 songs to submit your score!</source>
+        <translation>Du musst mindestens 10 Titel spielen, um deinen Punktestand hochzuladen!</translation>
+    </message>
 </context>
 <context>
     <name>MusecMainWindow</name>
@@ -200,6 +208,16 @@
     <message>
         <source>Network Error</source>
         <translation>Netzwerkfehler</translation>
+    </message>
+    <message>
+        <source>Found existing entry!</source>
+        <translation>Existierender Eintrag gefunden!</translation>
+    </message>
+    <message>
+        <source>There already is a better score for you.
+Are you sure you want to submit?</source>
+        <translation>Es ist bereits ein besserer Punktestand für dich vorhanden.
+Bist du sicher, dass du ihn hochladen willst?</translation>
     </message>
 </context>
 <context>
