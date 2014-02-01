@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>300</height>
+    <width>600</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,8 +24,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>480</width>
-    <height>300</height>
+    <width>600</width>
+    <height>360</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -38,50 +38,106 @@
    <iconset resource="musec.qrc">
     <normaloff>:/icon/musec.ico</normaloff>:/icon/musec.ico</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">* {
+font-size: 10pt;
+outline: none;
+}
+
+#mainwidget { border-image: url(:/backgrounds/bg.png); }
+QDialog { background-color: #444444; }
+
+QMenuBar, QStatusBar {
+background-color: #333333;
+color: #EEEEEE;
+}
+QMenuBar::item { background-color: transparent; }
+QMenuBar::item:selected { background-color:#222222; }
+
+QMenu {
+color: #EEEEEE;
+background-color: #222222;
+}
+QMenu::item { padding: 4px; }
+QMenu::item::selected { background-color:#333333; }
+
+QLabel { color: #EEEEEE; }
+
+QLineEdit {
+color: #EEEEEE;
+border: 1px solid #AAAAAA;
+background-color: rgba(0, 0, 0, 100);
+selection-background-color: #777777;
+border-radius: 6px;
+height: 20px;
+padding: 4px;
+}
+QLineEdit:disabled { color: #AAAAAA; }
+QLineEdit:enabled:hover,
+QLineEdit:enabled:focus {
+border-color: #EEEEEE;
+}
+
+QCheckBox::indicator {
+border: 1px solid #AAAAAA;
+background-color: rgba(0, 0, 0, 100);
+border-radius: 6px;
+height: 20px;
+width: 20px;
+}
+QCheckBox::indicator::checked { image: url(:/images/check.png); }
+
+QSlider::groove:horizontal {
+border: 1px solid #AAAAAA;
+border-radius: 6px;
+background-color: rgba(255, 255, 255, 100);
+height: 10px;
+}
+QSlider::handle:horizontal {
+border: 1px solid #222222;
+border-radius: 6px;
+background-color: #AAAAAA;
+width: 15px;
+margin: -6px -1px;
+}
+QSlider::handle:horizontal:hover {
+border-color: #444444;
+background-color: #CCCCCC;
+}
+QSlider::sub-page:horizontal {
+border-radius: 6px;
+background-color: rgba(255, 255, 255, 100);
+}
+
+QPushButton {
+font-size: 14pt;
+color: #EEEEEE;
+border: 1px solid #AAAAAA;
+border-radius: 12px;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  rgba(0, 0, 0, 100), stop:1 rgba(0, 0, 0, 200));
+}
+QDialog QPushButton {
+width: 100px;
+height: 30px;
+}
+QPushButton:disabled {
+border-color: #777777;
+color: #777777
+}
+QPushButton:enabled:hover {
+border-color: #EEEEEE;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  rgba(255, 255, 255, 100), stop:1 rgba(255, 255, 255, 50));
+}
+QPushButton:enabled:pressed {
+border-color: #EEEEEE;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0  rgba(255, 255, 255, 50), stop:1 rgba(255, 255, 255, 25));
+}</string>
+  </property>
   <widget class="QWidget" name="mainwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <layout class="QGridLayout" name="layout">
-    <property name="leftMargin">
-     <number>10</number>
-    </property>
-    <property name="topMargin">
-     <number>10</number>
-    </property>
-    <property name="rightMargin">
-     <number>10</number>
-    </property>
-    <property name="bottomMargin">
-     <number>10</number>
-    </property>
-    <property name="spacing">
-     <number>5</number>
-    </property>
-    <item row="7" column="0">
-     <widget class="QLabel" name="lblScore">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Score:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0" colspan="6">
-     <widget class="QLabel" name="lblAlbum">
-      <property name="text">
-       <string>Album:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="6">
-     <widget class="QLabel" name="lblArtist">
-      <property name="text">
-       <string>Artist:</string>
-      </property>
-     </widget>
-    </item>
     <item row="7" column="2">
      <widget class="QLabel" name="lblMultiplier">
       <property name="sizePolicy">
@@ -92,6 +148,41 @@
       </property>
       <property name="text">
        <string>Multiplier:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QLabel" name="lblMultiplierVal">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string notr="true">0.00</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="6" rowspan="2" colspan="2">
+     <widget class="QPushButton" name="btnNext">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Accept</string>
       </property>
      </widget>
     </item>
@@ -108,7 +199,46 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="6">
+    <item row="8" column="1">
+     <widget class="QLabel" name="lblAverageVal">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string notr="true">0.00</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QLabel" name="lblLast">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Last Score:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="3">
+     <widget class="QLabel" name="lblLastVal">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="7">
      <widget class="QCheckBox" name="chkTitle">
       <property name="enabled">
        <bool>false</bool>
@@ -127,28 +257,14 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="6">
-     <widget class="QLabel" name="lblTitle">
-      <property name="text">
-       <string>Title:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="6">
-     <widget class="QLineEdit" name="edTitle">
+    <item row="5" column="0" colspan="7">
+     <widget class="QLineEdit" name="edAlbum">
       <property name="enabled">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="6">
-     <widget class="QLineEdit" name="edArtist">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0" colspan="6">
+    <item row="6" column="0" colspan="7">
      <widget class="QSlider" name="slDifficulty">
       <property name="minimum">
        <number>0</number>
@@ -170,59 +286,21 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="6">
-     <widget class="QCheckBox" name="chkAlbum">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+    <item row="2" column="0" colspan="7">
+     <widget class="QLabel" name="lblArtist">
       <property name="text">
-       <string/>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
+       <string>Artist:</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="6">
-     <widget class="QLabel" name="lblDifficulty">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+    <item row="0" column="0" colspan="7">
+     <widget class="QLabel" name="lblTitle">
       <property name="text">
-       <string notr="true">1s</string>
+       <string>Title:</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="6">
-     <widget class="QLineEdit" name="edAlbum">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="2">
-     <widget class="QLabel" name="lblLast">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Last Score:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="6">
+    <item row="3" column="7">
      <widget class="QCheckBox" name="chkArtist">
       <property name="enabled">
        <bool>false</bool>
@@ -241,7 +319,82 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="4" rowspan="2">
+    <item row="5" column="7">
+     <widget class="QCheckBox" name="chkAlbum">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="7">
+     <widget class="QLineEdit" name="edTitle">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="7">
+     <widget class="QLineEdit" name="edArtist">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="7">
+     <widget class="QLabel" name="lblDifficulty">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string notr="true">1s</string>
+      </property>
+      <property name="indent">
+       <number>4</number>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="lblScore">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Score:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLabel" name="lblScoreVal">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string notr="true">0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="4" rowspan="2" colspan="2">
      <widget class="QPushButton" name="btnPlay">
       <property name="enabled">
        <bool>false</bool>
@@ -263,53 +416,10 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="3">
-     <widget class="QLabel" name="lblMultiplierVal">
+    <item row="4" column="0" colspan="7">
+     <widget class="QLabel" name="lblAlbum">
       <property name="text">
-       <string notr="true">0.00</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="1">
-     <widget class="QLabel" name="lblAverageVal">
-      <property name="text">
-       <string notr="true">0.00</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="3">
-     <widget class="QLabel" name="lblLastVal">
-      <property name="text">
-       <string notr="true">0</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="1">
-     <widget class="QLabel" name="lblScoreVal">
-      <property name="text">
-       <string notr="true">0</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="5" rowspan="2" colspan="2">
-     <widget class="QPushButton" name="btnNext">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>100</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Accept</string>
+       <string>Album:</string>
       </property>
      </widget>
     </item>
@@ -422,10 +532,10 @@
   <tabstop>edAlbum</tabstop>
   <tabstop>btnNext</tabstop>
   <tabstop>btnPlay</tabstop>
+  <tabstop>slDifficulty</tabstop>
   <tabstop>chkTitle</tabstop>
   <tabstop>chkArtist</tabstop>
   <tabstop>chkAlbum</tabstop>
-  <tabstop>slDifficulty</tabstop>
  </tabstops>
  <resources>
   <include location="musec.qrc"/>
@@ -438,12 +548,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>199</x>
-     <y>60</y>
+     <x>208</x>
+     <y>93</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>230</y>
+     <x>590</x>
+     <y>323</y>
     </hint>
    </hints>
   </connection>
@@ -454,12 +564,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>199</x>
-     <y>110</y>
+     <x>208</x>
+     <y>162</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>230</y>
+     <x>590</x>
+     <y>323</y>
     </hint>
    </hints>
   </connection>
@@ -470,12 +580,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>199</x>
-     <y>160</y>
+     <x>208</x>
+     <y>230</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>230</y>
+     <x>590</x>
+     <y>323</y>
     </hint>
    </hints>
   </connection>

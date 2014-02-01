@@ -2,4 +2,10 @@
   <qresource prefix="icon">
     <file>musec.ico</file>
   </qresource>
+  <qresource prefix="images">
+    <file>check.png</file>
+  </qresource>
+  <qresource prefix="backgrounds">
+    <file>bg.png</file>
+  </qresource>
 </RCC>

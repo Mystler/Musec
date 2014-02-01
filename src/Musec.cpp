@@ -447,7 +447,7 @@ void Musec::on_actAbout_triggered()
     QMessageBox::about(this, tr("About Musec"),
             QString("Musec %1\n").arg(MUSEC_VERSION) +
             tr("Using Qt %1").arg(QT_VERSION_STR) + "\n" +
-            tr("Created by") + " Florian Meißner 2013\n\n" +
+            tr("Created by") + " Florian Meißner\n\n" +
             tr("Localization:") + "\n" +
             "(DE) Florian Meißner\n" +
             "(FR) Lyrositor\n\n" +
