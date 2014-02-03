@@ -31,9 +31,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
 {
     setupUi(this);
-    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint |
-            Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint |
-            Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground, true);
     fTranslator = new QTranslator();
     fScore = new Score();
     fNetMgr = new NetMgr(this);
@@ -44,9 +43,15 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fTimer->setSingleShot(true);
     fTimer->setInterval(TIME_HARD * 1000);
     fIsActive = false;
+    fDragging = false;
 
     loadLanguage(getConfig("lang", QLocale::system().name()));
     fExtensions << "*.mp3" << "*.m4a"; // These should contain meta data
+
+    btnMenuMusic->setMenu(menuMusic);
+    btnMenuInfo->setMenu(menuInfo);
+    btnMenuLanguage->setMenu(menuLanguage);
+    btnMenuHelp->setMenu(menuHelp);
 
     connect(fScore, &Score::multiplierChanged, this, &Musec::multiplierChanged);
     connect(fNetMgr, &NetMgr::done, this, &Musec::scoreSubmitted);
@@ -173,8 +178,8 @@ void Musec::updateLabels()
 
 void Musec::resetForm()
 {
-    fIsActive = false;
     btnPlay->setText(tr("Play"));
+    btnPlay->setDisabled(true);
     btnNext->setDisabled(true);
     edTitle->setDisabled(true);
     edArtist->setDisabled(true);
@@ -183,11 +188,12 @@ void Musec::resetForm()
     // Reset difficulty
     slDifficulty->setMinimum(kHard);
     slDifficulty->setValue(kHard);
+
+    fIsActive = false;
 }
 
 void Musec::activateForm()
 {
-    fIsActive = true;
     edTitle->clear();
     edArtist->clear();
     edAlbum->clear();
@@ -199,6 +205,8 @@ void Musec::activateForm()
     chkTitle->setChecked(false);
     chkArtist->setChecked(false);
     chkAlbum->setChecked(false);
+
+    fIsActive = true;
 }
 
 void Musec::loadLanguage(const QString& lang)
@@ -215,6 +223,34 @@ void Musec::changeEvent(QEvent* event)
         retranslateUi(this);
 }
 
+void Musec::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton && event->pos().x() <= headwidget->width() &&
+        event->pos().y() <= headwidget->height()) {
+        // Enter window move mode
+        fDragging = true;
+        fDragPos = event->globalPos() - frameGeometry().topLeft();
+        event->accept();
+    }
+}
+
+void Musec::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        // Leave window move mode
+        fDragging = false;
+        event->accept();
+    }
+}
+
+void Musec::mouseMoveEvent(QMouseEvent* event)
+{
+    if (event->buttons() & Qt::LeftButton && fDragging) {
+        move(event->globalPos() - fDragPos);
+        event->accept();
+    }
+}
+
 void Musec::scoreSubmitted(bool success, QString msg)
 {
     if (success) {
@@ -227,8 +263,11 @@ void Musec::scoreSubmitted(bool success, QString msg)
 
 void Musec::mediaStatusChanged(quint8 status)
 {
-    if (status == QMediaPlayer::InvalidMedia)
+    qDebug() << fPlayer->mediaStatus();
+    if (status == QMediaPlayer::InvalidMedia) {
         loadNext();
+        return;
+    }
     if (status != QMediaPlayer::LoadedMedia)
         return;
 
@@ -240,6 +279,7 @@ void Musec::mediaStatusChanged(quint8 status)
 
     // Skip if too short (<30s)
     if (duration <= 30000) {
+        qDebug() << "SKIP: Too short!";
         loadNext();
         return;
     }
@@ -249,6 +289,7 @@ void Musec::mediaStatusChanged(quint8 status)
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
     if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
+        qDebug() << "SKIP: No tags!";
         loadNext();
         return;
     }
@@ -317,8 +358,8 @@ void Musec::on_btnPlay_clicked()
 void Musec::on_btnNext_clicked()
 {
     fPlayer->stop();
-    evaluate();
     resetForm();
+    evaluate();
     loadNext();
 }
 

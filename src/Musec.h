@@ -47,6 +47,9 @@ private:
     QStringList fExtensions;
     qint64 fStartTime;
     bool fIsActive;
+    bool fDragging;
+    QPoint fDragPos;
+
     void loadNext();
     void playSong();
     void evaluate();
@@ -55,7 +58,10 @@ private:
     void resetForm();
     void activateForm();
     void loadLanguage(const QString& lang);
-    void changeEvent(QEvent* event);
+    virtual void changeEvent(QEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
 
 private slots:
     void scoreSubmitted(bool success, QString msg);
