@@ -46,6 +46,7 @@ private:
     QTimer* fTimer;
     QStringList fExtensions;
     qint64 fStartTime;
+    quint8 fDiffLock;
     bool fIsActive;
     bool fDragging;
     QPoint fDragPos;

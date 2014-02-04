@@ -1,6 +1,4 @@
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Multimedia REQUIRED)
-find_package(Qt5Network REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
 set(Musec_HEADERS

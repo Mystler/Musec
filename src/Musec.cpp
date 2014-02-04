@@ -33,15 +33,17 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground, true);
-    fTranslator = new QTranslator();
+    fTranslator = new QTranslator(this);
     fScore = new Score();
     fNetMgr = new NetMgr(this);
     fPlayer = new QMediaPlayer(this, QMediaPlayer::LowLatency);
-    fPlaylist = new QMediaPlaylist();
+    fPlaylist = new QMediaPlaylist(this);
     fPlayer->setPlaylist(fPlaylist);
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
     fTimer->setInterval(TIME_HARD * 1000);
+    fStartTime = 0;
+    fDiffLock = kHard;
     fIsActive = false;
     fDragging = false;
 
@@ -186,6 +188,7 @@ void Musec::resetForm()
     edAlbum->setDisabled(true);
 
     // Reset difficulty
+    fDiffLock = kHard;
     slDifficulty->setMinimum(kHard);
     slDifficulty->setValue(kHard);
 
@@ -312,6 +315,12 @@ void Musec::difficultyChanged(quint8 value)
     // Prevent difficulty cheating
     fPlayer->stop();
 
+    // You shall not move the slider backwards
+    if (value < fDiffLock) {
+        slDifficulty->setValue(fDiffLock);
+        return;
+    }
+
     // Set time
     switch (value) {
     case kEasy:
@@ -350,8 +359,10 @@ void Musec::on_btnPlay_clicked()
     // Activate input
     if (!fIsActive)
         activateForm();
+
     // Prevent difficulty cheating
-    slDifficulty->setMinimum(slDifficulty->value());
+    fDiffLock = slDifficulty->value();
+
     playSong();
 }
 
