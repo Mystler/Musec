@@ -5,7 +5,7 @@ CRCCheck                on
 InstallDir              "$PROGRAMFILES\Musec"
 InstallDirRegKey        HKCU "Software\Mystler\Musec" ""
 OutFile                 "Musec.exe"
-RequestExecutionLevel   user
+RequestExecutionLevel   admin
 
 Name                "Musec"
 VIAddVersionKey     "CompanyName"       "Mystler"
@@ -33,6 +33,7 @@ VIProductVersion    "1.1.1.0"
 !define MUI_LANGDLL_ALLLANGUAGES
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "French"
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
