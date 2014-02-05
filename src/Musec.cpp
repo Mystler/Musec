@@ -42,7 +42,7 @@ Musec::Musec(QMainWindow* parent) : QMainWindow(parent)
     fTimer = new QTimer(this);
     fTimer->setSingleShot(true);
     fTimer->setInterval(TIME_HARD * 1000);
-    fStartTime = 0;
+    fStartTime = -1;
     fDiffLock = kHard;
     fIsActive = false;
     fDragging = false;
@@ -88,6 +88,7 @@ QString Musec::getConfig(const QString& key, const QString& defaultVal)
 
 void Musec::loadNext()
 {
+    fStartTime = -1;
     fPlaylist->removeMedia(fPlaylist->currentIndex());
     if (fPlaylist->isEmpty()) {
         statusbar->showMessage(tr("No songs left"));
@@ -98,7 +99,6 @@ void Musec::loadNext()
 void Musec::playSong()
 {
     statusbar->showMessage(QTime(0,0,0).addSecs(fStartTime).toString("mm:ss"));
-    fPlayer->setPosition(fStartTime * 1000);
     fPlayer->play();
     fTimer->start();
 }
@@ -271,7 +271,11 @@ void Musec::mediaStatusChanged(quint8 status)
         loadNext();
         return;
     }
-    if (status != QMediaPlayer::LoadedMedia)
+    if (status == QMediaPlayer::BufferedMedia) {
+        fPlayer->setPosition(fStartTime * 1000);
+        return;
+    }
+    if (status != QMediaPlayer::LoadedMedia || fStartTime >= 0)
         return;
 
     // Refresh data
@@ -291,14 +295,12 @@ void Musec::mediaStatusChanged(quint8 status)
     QString title = fPlayer->metaData(QMediaMetaData::Title).toString();
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
+    qDebug() << title << "-" << artist << "-" << album;
     if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
         qDebug() << "SKIP: No tags!";
         loadNext();
         return;
     }
-    qDebug() << title;
-    qDebug() << artist;
-    qDebug() << album;
 
     // Generate start time
     duration /= 1000;
