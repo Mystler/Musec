@@ -86,18 +86,21 @@ QString Musec::getConfig(const QString& key, const QString& defaultVal)
     return QSettings(SETTINGS_AUTHOR, SETTINGS_TITLE).value(key, defaultVal).toString();
 }
 
-void Musec::loadNext()
+void Musec::loadNext(bool remove)
 {
     fStartTime = -1;
-    fPlaylist->removeMedia(fPlaylist->currentIndex());
-    if (fPlaylist->isEmpty()) {
-        statusbar->showMessage(tr("No songs left"));
-        btnPlay->setDisabled(true);
-    }
+    if (remove)
+        fPlaylist->removeMedia(fPlaylist->currentIndex());
+    else
+        fPlaylist->next();
 }
 
 void Musec::playSong()
 {
+    // Prevent timer cheating
+    if (fTimer->isActive())
+        return;
+
     statusbar->showMessage(QTime(0,0,0).addSecs(fStartTime).toString("mm:ss"));
     fPlayer->play();
     fTimer->start();
@@ -271,6 +274,11 @@ void Musec::mediaStatusChanged(quint8 status)
         loadNext();
         return;
     }
+    if (status == QMediaPlayer::NoMedia) {
+        btnPlay->setDisabled(true);
+        statusbar->showMessage(tr("No songs left"));
+        return;
+    }
     if (status == QMediaPlayer::BufferedMedia) {
         fPlayer->setPosition(fStartTime * 1000);
         return;
@@ -295,12 +303,12 @@ void Musec::mediaStatusChanged(quint8 status)
     QString title = fPlayer->metaData(QMediaMetaData::Title).toString();
     QString artist = fPlayer->metaData(QMediaMetaData::Author).toString();
     QString album = fPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
-    qDebug() << title << "-" << artist << "-" << album;
     if (title.isEmpty() || artist.isEmpty() || album.isEmpty()) {
         qDebug() << "SKIP: No tags!";
         loadNext();
         return;
     }
+    qDebug() << title << "-" << artist << "-" << album;
 
     // Generate start time
     duration /= 1000;
@@ -348,7 +356,7 @@ void Musec::multiplierChanged(float value)
 void Musec::playlistLoaded()
 {
     fPlaylist->shuffle();
-    fPlaylist->next();
+    loadNext(false);
 }
 
 void Musec::playlistLoadFailed()
@@ -398,7 +406,7 @@ void Musec::on_actAddDir_triggered()
     }
 
     fPlaylist->shuffle();
-    fPlaylist->next();
+    loadNext(false);
 }
 
 void Musec::on_actAddPlaylist_triggered()
@@ -432,14 +440,14 @@ void Musec::on_actAddFiles_triggered()
         fPlaylist->addMedia(QUrl::fromLocalFile(files.at(i)));
 
     fPlaylist->shuffle();
-    fPlaylist->next();
+    loadNext(false);
 }
 
 void Musec::on_actClear_triggered()
 {
-    resetForm();
+    fPlayer->stop();
     fPlaylist->clear();
-    statusbar->showMessage(tr("No songs left"));
+    resetForm();
 }
 
 void Musec::on_actStats_triggered()

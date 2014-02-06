@@ -51,7 +51,7 @@ private:
     bool fDragging;
     QPoint fDragPos;
 
-    void loadNext();
+    void loadNext(bool remove = true);
     void playSong();
     void evaluate();
     bool match(QString str1, QString str2);
