@@ -14,7 +14,7 @@ Dependencies
 This program has the following requirements:
 - C++11 compiler (GCC 4.6+, Clang 3.0+, MSVC 11+)
 - CMake 2.8.11.2 or newer
-- Qt 5.1 Framework or newer
+- Qt 5.2.1 Framework
 
 For running a score webservice, you will also need:
 - A webserver (e.g. Apache2 or nginx) that is configured correctly for
