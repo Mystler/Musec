@@ -4,6 +4,7 @@ project(Musec)
 set(MUSEC_SCORE_URL "http://www.mystler.eu/musec/score/" CACHE STRING "Webservice URL")
 add_definitions(-DSCORE_URL="${MUSEC_SCORE_URL}")
 
+set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
