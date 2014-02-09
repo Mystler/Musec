@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="locales">
+    <file>musec_de.qm</file>
+    <file>musec_fr.qm</file>
+  </qresource>
+</RCC>

@@ -218,7 +218,7 @@ void Musec::activateForm()
 void Musec::loadLanguage(const QString& lang)
 {
     qApp->removeTranslator(fTranslator);
-    fTranslator->load(QLocale(lang), "musec", "_", QApplication::applicationDirPath().append("/locales"));
+    fTranslator->load(QLocale(lang), "musec", "_", ":/locales");
     setConfig("lang", lang);
     qApp->installTranslator(fTranslator);
 }

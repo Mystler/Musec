@@ -15,7 +15,8 @@ set(Musec_SOURCES
     NetMgr.cpp
     Score.cpp
 )
-set(Musec_QRC ../res/musec.qrc)
+configure_file(../res/locales.qrc.in locales.qrc)
+set(Musec_QRC ../res/musec.qrc ${CMAKE_CURRENT_BINARY_DIR}/locales.qrc)
 set(Musec_QUI ../res/musec.ui)
 set(Musec_TS
     ../loc/musec_de.ts
@@ -48,4 +49,3 @@ source_group("Generated Files" FILES
 )
 
 install(TARGETS Musec DESTINATION .)
-install(FILES ${Musec_LOC} DESTINATION locales)
