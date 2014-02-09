@@ -16,11 +16,11 @@ VIAddVersionKey     "ProductName"       "Musec"
 VIProductVersion    "1.1.2.0"
 
 !define MUI_ABORTWARNING
-!define MUI_ICON                        "res\musec.ico"
+!define MUI_ICON                        "..\res\musec.ico"
 !define MUI_FINISHPAGE_RUN              "$INSTDIR\Musec.exe"
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE                   "COPYING.txt"
+!insertmacro MUI_PAGE_LICENSE           "..\COPYING.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -45,35 +45,35 @@ FunctionEnd
 
 Section "Files"
     SetOutPath  "$INSTDIR"
-    File        "dist\Musec.exe"
-    File        "dist\icudt52.dll"
-    File        "dist\icuin52.dll"
-    File        "dist\icuuc52.dll"
-    File        "dist\Qt5Core.dll"
-    File        "dist\Qt5Gui.dll"
-    File        "dist\Qt5Multimedia.dll"
-    File        "dist\Qt5Network.dll"
-    File        "dist\Qt5Widgets.dll"
+    File        "..\dist\Musec.exe"
+    File        "..\dist\icudt52.dll"
+    File        "..\dist\icuin52.dll"
+    File        "..\dist\icuuc52.dll"
+    File        "..\dist\Qt5Core.dll"
+    File        "..\dist\Qt5Gui.dll"
+    File        "..\dist\Qt5Multimedia.dll"
+    File        "..\dist\Qt5Network.dll"
+    File        "..\dist\Qt5Widgets.dll"
 
     SetOutPath  "$INSTDIR\imageformats"
-    File        "dist\imageformats\qico.dll"
+    File        "..\dist\imageformats\qico.dll"
 
     SetOutPath  "$INSTDIR\locales"
-    File        "dist\locales\musec_de.qm"
-    File        "dist\locales\musec_fr.qm"
+    File        "..\dist\locales\musec_de.qm"
+    File        "..\dist\locales\musec_fr.qm"
 
     SetOutPath  "$INSTDIR\mediaservice"
-    File        "dist\mediaservice\qtmedia_audioengine.dll"
-    File        "dist\mediaservice\wmfengine.dll"
+    File        "..\dist\mediaservice\qtmedia_audioengine.dll"
+    File        "..\dist\mediaservice\wmfengine.dll"
 
     SetOutPath  "$INSTDIR\platforms"
-    File        "dist\platforms\qwindows.dll"
+    File        "..\dist\platforms\qwindows.dll"
 
     SetOutPath  "$INSTDIR\playlistformats"
-    File        "dist\playlistformats\qtmultimedia_m3u.dll"
+    File        "..\dist\playlistformats\qtmultimedia_m3u.dll"
 
     SetOutPath  "$INSTDIR"
-    File        "dist\vcredist_x86.exe"
+    File        "..\dist\vcredist_x86.exe"
     ExecWait    "$INSTDIR\vcredist_x86.exe /q /norestart"
 
     WriteRegStr HKCU "Software\Mystler\Musec" "" $INSTDIR

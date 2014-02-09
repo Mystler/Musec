@@ -2,4 +2,4 @@ build*/
 dist*/
 *.kdev4
 www/score/config.ini.php
-Musec.exe
+inst/Musec.exe
