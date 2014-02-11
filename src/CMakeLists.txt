@@ -15,7 +15,7 @@ set(Musec_SOURCES
     NetMgr.cpp
     Score.cpp
 )
-configure_file(../res/locales.qrc.in locales.qrc)
+configure_file(../loc/locales.qrc.in locales.qrc)
 set(Musec_QRC ../res/musec.qrc ${CMAKE_CURRENT_BINARY_DIR}/locales.qrc)
 set(Musec_QUI ../res/musec.ui)
 set(Musec_TS
