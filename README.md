@@ -26,12 +26,8 @@ Building
 --------
 
 I recommend to set the following CMake variables:
-- *CMAKE_INSTALL_PREFIX* - Path for `make install`
-- *CMAKE_PREFIX_PATH* - Qt5 directory (on Windows)
-
-In order to load the language files correctly, they have to be in a
-subfolder called *locales*. Building the *INSTALL* project will copy
-everything for you.
+- *CMAKE_INSTALL_PREFIX* - Path for the install target
+- *CMAKE_PREFIX_PATH* - Qt5 directory
 
 
 Webservice
