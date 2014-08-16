@@ -37,7 +37,7 @@ NetMgr::~NetMgr()
 void NetMgr::submitScore(const QString& user, const Score* score)
 {
     // Check for existing entry via get request
-    QNetworkRequest get(QUrl(QString(SCORE_URL "u/%1").arg(user)));
+    QNetworkRequest get(QUrl(QString(SCORE_URL "index.php?user=%1").arg(user)));
     QNetworkReply* checkReply = fAccessMgr->get(get);
     QEventLoop wait;
     connect(checkReply, &QNetworkReply::finished, &wait, &QEventLoop::quit);

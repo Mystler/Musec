@@ -12,7 +12,7 @@ Dependencies
 ------------
 
 This program has the following requirements:
-- C++11 compiler (GCC 4.6+, Clang 3.0+, MSVC 11+)
+- C++11 compiler (GCC 4.6+, Clang 3.0+, VS 2012+)
 - CMake 2.8.11.2 or newer
 - Qt 5.2.1 Framework
 
@@ -60,13 +60,4 @@ file matches your database configuration.
 ```
 cp config-sample.ini.php config.ini.php
 nano config.ini.php
-```
-
-If you are using **Apache2**, the *.htaccess* file in the folder should
-should take care of the necessary rewrite rules.
-However, if you are using **nginx**, you have to add your own rewrite
-rule to the server or location configuration.
-
-```
-rewrite ^/musec/score/u/(.*)$ /musec/score/index.php?user=$1;
 ```
