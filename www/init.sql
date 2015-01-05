@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ==LICENSE==*/
 
-\connect musec
-
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
@@ -35,4 +33,3 @@ CREATE TABLE scores (
     streak integer,
     difficulty varchar(32)
 );
-ALTER TABLE scores OWNER TO musec;
